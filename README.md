@@ -41,6 +41,9 @@ dotfiles for multiple platforms. maintained by chezmoi
     args = ["-d", "{{ .Destination }}", "{{ .Source }}", "{{ .Target }}"]
 ```
 
+- 템플릿 관리대상(?) 으로 새로 추가: `chezmoi add --template ~/.config/git/config`
+  - 관리대상을 템플릿으로 바꾸기: `chezmoi chattr +template ~/.zshrc`
+
 ### 참고문서
 
 - https://pozafly.github.io/tools/manage-with-rm-rf-erased-setting-file-chezmoi/
