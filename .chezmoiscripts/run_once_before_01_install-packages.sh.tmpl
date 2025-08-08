@@ -1,0 +1,43 @@
+#!/bin/sh
+{{ if eq .chezmoi.os "darwin" }}
+echo "darwin"
+{{ else }}
+echo "linux"
+{{ end }}
+
+# If Oh-my-zsh is not installed on the system, it will be installed here
+if [ ! -d $HOME/.oh-my-zsh ]; then
+  printf '\n\n\e[33mOh-my-zsh not found. \e[0mInstalling Oh-my-zsh...'
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+  printf '\n\n\e[0mOh-my-zsh found. Continuing...'
+fi
+
+# zsh-autosuggetions
+if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+else
+  printf '\n\n\e[0mzsh-autosuggetions found. Continuing...'
+fi
+
+# zsh-syntax-highlighting
+if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+else
+  printf '\n\n\e[0mzsh-syntax-highlighting found. Continuing...'
+fi
+
+# powerlevel10k
+if [ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+else
+  printf '\n\n\e[0m found. Continuing...'
+fi
+
+# fzf
+if [ ! -d $HOME/.fzf ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+else
+  printf '\n\n\e[0mfzf found. Continuing...'
+fi
+
