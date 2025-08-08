@@ -120,11 +120,14 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+{{ if eq .chezmoi.os "darwin" }}
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:~/.bun/bin
 export JAVA_HOME=$(/usr/libexec/java_home -v17)
+{{ end }}
+
+export PATH=$PATH:~/.bun/bin
 
 # bun completions
 [ -s "/Users/dongsu/.bun/_bun" ] && source "/Users/dongsu/.bun/_bun"
