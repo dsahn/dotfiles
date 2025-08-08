@@ -6,7 +6,14 @@ dotfiles for multiple platforms. maintained by chezmoi
 어쩔수없이 먼저 깔아야 하는것들
 
 - rhel
-  - zsh: `sudo dnf install zsh`
+  - zsh
+  ```sh
+  sudo dnf install zsh
+
+  # in bash_profile
+  export SHELL=`which zsh`
+  exec `which zsh` -l
+  ```
 
 ## 체크리스트
 
