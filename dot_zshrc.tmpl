@@ -124,7 +124,7 @@ source $ZSH/oh-my-zsh.sh
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-export JAVA_HOME=$(/usr/libexec/java_home -v17)
+[[ ! -f /usr/libexec/java_home ]] || export JAVA_HOME=$(/usr/libexec/java_home -v17)
 {{ end }}
 
 export PATH=$PATH:~/.bun/bin
