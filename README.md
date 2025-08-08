@@ -15,7 +15,7 @@ dotfiles for multiple platforms. maintained by chezmoi
 - 수정 : `chezmoi edit ~/.zshrc`
 - 변경한 것 반영 : `chezmoi apply -v`
 - chezmoi workdir 이동 : `chezmoi cd` , 나가기 : `exit`
-- 템플릿 원본위치
+- 템플릿 원본위치, `chezmoi edit-config` 로도 수정 가능하다.
   - `~/.config/chezmoi/chezmoi.toml`
 - 다른 장비에서 땡겨오기 : `chezmoi init git@github.com:$GITHUB_USERNAME/dotfiles.git`  
   - 미리 확인 : `chezmoi diff`
