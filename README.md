@@ -19,8 +19,8 @@ dotfiles for multiple platforms. maintained by chezmoi
 
 - [x] zshrc
 - [ ] vimrc(nvim)
-- [ ] zsh-dependencies(fzf, powershell, ..)
-- [ ] ghostty settings
+- [x] zsh-dependencies(fzf, powershell, ..)
+- [x] ghostty settings
 
 ## 자주쓸것들
 
