@@ -183,7 +183,16 @@ alias cd="z"
 alias yazi="yazi --icons=always"
 
 ## fzf tricks
-alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim'
+vv() {
+  local find_files_cmd="fd --type f --hidden --exclude .git"
+  if [[ -n "$TMUX" ]]; then
+    eval "$find_files_cmd | fzf-tmux -p --reverse | xargs nvim"
+  elif [[ -n "$ZELLIJ" ]] && command -v zellij >/dev/null 2>&1; then
+    zellij run --floating -- zsh -lc "$find_files_cmd | fzf --reverse | xargs nvim"
+  else
+    eval "$find_files_cmd | fzf --height=40% --reverse --border | xargs nvim"
+  fi
+}
 # preview alias
 # alias prv="fd --type f --hidden --exclude .git | fzf --preview 'bat {1}' | xargs nvim"
 alias prv="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}' | xargs nvim"
