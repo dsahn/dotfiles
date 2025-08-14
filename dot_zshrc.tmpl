@@ -129,10 +129,9 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # fzf 키바인딩 커스터마이징
 bindkey -r "^T"  # 기존 Ctrl+T 제거
-bindkey "^@" fzf-file-widget  # Ctrl+G로 파일 선택
+bindkey "^F" fzf-file-widget  # Ctrl+F로 파일 선택
 # fzf 자동완성 강제 활성화
 export FZF_COMPLETION_TRIGGER='**'
-[[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]] && source /opt/homebrew/opt/fzf/shell/completion.zsh
 
 {{ if eq .chezmoi.os "darwin" }}
 export ANDROID_HOME=$HOME/Library/Android/sdk
