@@ -1,3 +1,6 @@
 {{ if ne .chezmoi.os "darwin" }}
 Library/Application Support/com.mitchellh.ghostty/config
 {{ end }}
+
+# k8s configuration (managed separately from dotfiles)
+.k8s-config.zsh
