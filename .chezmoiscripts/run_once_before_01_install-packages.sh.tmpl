@@ -13,7 +13,6 @@ PACKAGES=(
   "fd"       # find replacement
   "bat"      # cat replacement
   "uv"       # python package manager
-  "bun"      # javascript package manager
   "rust"     # rust
 )
 {{ else }}
@@ -96,3 +95,12 @@ else
   printf '\n\e[0mfzf found. Continuing...'
 fi
 
+# bun
+if [ ! -d $HOME/.bun ]; then
+    curl -fsSL https://bun.sh/install | bash
+else
+  printf '\n\e[0mbun found. Continuing...'
+fi
+
+# bun completions
+[ -s "{{ .chezmoi.homeDir }}/.bun/_bun" ] && source "{{ .chezmoi.homeDir }}/.bun/_bun"
