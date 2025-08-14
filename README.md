@@ -25,7 +25,13 @@ dotfiles for multiple platforms. maintained by chezmoi
 - [ ] karabiner 세팅(darwin)
 - [ ] vimrc(nvim)
   - 개별 스트립트로 작성, 설치 여부 확인하기
+  - [ ] nvim + rust 환경 구축
 - [ ] vscode common settings
+- [x] aliases
+- [ ] tmux -> zellij in zshrc
+- [x] yazi
+  - 필요한 것들도 같이 깔아주지
+- ? 회사환경/아닌환경 나눠서 뭔가 하려고했는디..
 
 ## keybindings
 
