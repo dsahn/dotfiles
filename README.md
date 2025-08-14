@@ -18,9 +18,14 @@ dotfiles for multiple platforms. maintained by chezmoi
 ## 체크리스트
 
 - [x] zshrc
-- [ ] vimrc(nvim)
+  - [ ] 회사전용 로직을 발라내고, 공통 세팅만 유지한다.
 - [x] zsh-dependencies(fzf, powershell, ..)
 - [x] ghostty settings
+- [x] 패키지 매니저 설치(brew, cask) 및 설치스크립트 작성
+- [ ] karabiner 세팅(darwin)
+- [ ] vimrc(nvim)
+  - 개별 스트립트로 작성, 설치 여부 확인하기
+- [ ] vscode common settings
 
 ## 자주쓸것들
 
