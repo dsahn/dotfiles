@@ -27,6 +27,13 @@ dotfiles for multiple platforms. maintained by chezmoi
   - 개별 스트립트로 작성, 설치 여부 확인하기
 - [ ] vscode common settings
 
+## keybindings
+
+- fzf 키바인딩
+  - Ctrl + R (^R): 명령어 히스토리 검색
+  - Ctrl + T (^T): 파일 선택해서 명령줄에 삽입
+  - Alt(option) + C (`^[c`): 디렉터리 선택해서 이동 ,(`^[` : escape)
+
 ## 자주쓸것들
 
 - 초기 설정 : `chezmoi init`
