@@ -173,9 +173,23 @@ set -o vi
 alias vi="nvim"
 alias vim="nvim"
 alias cat="bat"
+alias less="bat"
 alias ls="eza --icons=always"
 alias ll="eza --icons=always -l"
 alias la="eza --icons=always -la"
+# ld - 디렉터리만 나열합니다(파일 없음)
+alias ld='eza -lD'
+# lf - 파일만 나열합니다(디렉터리 없음)
+alias lf='eza -lF --color=always | grep -v /'
+# lh - 숨겨진 파일만 나열합니다(디렉토리 없음)
+alias lh='eza -dl .* --group-directories-first'
+# lll - 디렉토리가 있는 모든 것을 먼저 나열합니다
+alias lll='eza -al --group-directories-first'
+# lls - 크기별로 정렬된 파일만 나열합니다
+alias lls='eza -alF --color=always --sort=size --reverse | grep -v /'
+# lt - 업데이트된 시간순으로 모든 파일을 나열합니다
+alias lt='eza -al --sort=modified'
+
 alias grep="rg"
 alias tree="eza --icons=always --tree"
 alias find="fd"
@@ -183,16 +197,7 @@ alias cd="z"
 alias yazi="yazi --icons=always"
 
 ## fzf tricks
-vv() {
-  local find_files_cmd="fd --type f --hidden --exclude .git"
-  if [[ -n "$TMUX" ]]; then
-    eval "$find_files_cmd | fzf-tmux -p --reverse | xargs nvim"
-  elif [[ -n "$ZELLIJ" ]] && command -v zellij >/dev/null 2>&1; then
-    zellij run --floating -- zsh -lc "$find_files_cmd | fzf --reverse | xargs nvim"
-  else
-    eval "$find_files_cmd | fzf --height=40% --reverse --border | xargs nvim"
-  fi
-}
+alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim'
 # preview alias
 # alias prv="fd --type f --hidden --exclude .git | fzf --preview 'bat {1}' | xargs nvim"
 alias prv="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}' | xargs nvim"
