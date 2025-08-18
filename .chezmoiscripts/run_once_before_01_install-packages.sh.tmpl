@@ -20,180 +20,71 @@ PACKAGES=(
 {{ else }}
 echo "linux script running"
 
-# Detect Linux distribution
-if [ -f /etc/os-release ]; then
-    . /etc/os-release
-    OS=$NAME
-    DISTRO=$ID
-elif type lsb_release >/dev/null 2>&1; then
-    OS=$(lsb_release -si)
-    DISTRO=$(echo $OS | tr '[:upper:]' '[:lower:]')
-elif [ -f /etc/redhat-release ]; then
-    OS="Red Hat Enterprise Linux"
-    DISTRO="rhel"
+# Install Nix package manager if not already installed
+if ! command -v nix &> /dev/null; then
+    printf '\n\e[33mNix not found. \e[0mInstalling Nix package manager...'
+    # Install Nix with daemon mode for multi-user installation
+    curl -L https://nixos.org/nix/install | sh -s -- --daemon
+    
+    # Source nix profile
+    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    fi
+    
+    # Enable flakes and nix-command (experimental features)
+    mkdir -p ~/.config/nix
+    echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 else
-    OS=$(uname -s)
-    DISTRO="unknown"
+    printf '\n\e[0mNix found. \e[0mContinuing...'
+    # Source nix profile if available
+    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    fi
 fi
 
-echo "Detected OS: $OS"
-echo "Distro: $DISTRO"
-
-# Package installation function for different package managers
-install_package() {
+# Function to install packages with Nix
+install_nix_package() {
     local package=$1
-    case $DISTRO in
-        ubuntu|debian)
-            if ! dpkg -l | grep -q "^ii  $package "; then
-                printf "\n\e[33m$package \e[0mnot found. \e[0mInstalling..."
-                sudo apt-get update -qq && sudo apt-get install -y $package
-            else
-                printf "\n\e[0m$package \e[0mfound. \e[0mContinuing..."
-            fi
-            ;;
-        centos|rhel|fedora)
-            if ! rpm -q $package &> /dev/null; then
-                printf "\n\e[33m$package \e[0mnot found. \e[0mInstalling..."
-                sudo dnf install -y $package
-            else
-                printf "\n\e[0m$package \e[0mfound. \e[0mContinuing..."
-            fi
-            ;;
-        arch|manjaro)
-            if ! pacman -Qs $package &> /dev/null; then
-                printf "\n\e[33m$package \e[0mnot found. \e[0mInstalling..."
-                sudo pacman -S --noconfirm $package
-            else
-                printf "\n\e[0m$package \e[0mfound. \e[0mContinuing..."
-            fi
-            ;;
-        *)
-            echo "Unsupported distribution: $DISTRO"
-            return 1
-            ;;
-    esac
+    if ! command -v $package &> /dev/null; then
+        printf "\n\e[33m$package \e[0mnot found. \e[0mInstalling with Nix..."
+        nix-env -iA nixpkgs.$package
+    else
+        printf "\n\e[0m$package \e[0mfound. \e[0mContinuing..."
+    fi
 }
 
-# Install basic packages available in package managers
-printf '\n\e[33mInstalling basic packages...\e[0m'
+# Define Nix packages to install
+NIX_PACKAGES=(
+    "gcc"           # build-essential equivalent
+    "gnumake"       # make
+    "cmake"         # cmake
+    "htop"          # process viewer
+    "neovim"        # vim replacement
+    "ripgrep"       # grep replacement
+    "fd"            # find replacement
+    "bat"           # cat replacement
+    "eza"           # ls replacement
+    "zellij"        # tmux replacement
+    "zoxide"        # cd replacement
+    "yazi"          # file manager
+    "rustc"         # rust compiler
+    "cargo"         # rust package manager
+    "python3"       # python
+)
 
-case $DISTRO in
-    ubuntu|debian)
-        # Update package list first
-        sudo apt-get update -qq
-        
-        # Install build tools first
-        install_package "build-essential"
-        install_package "cmake"
-        
-        # Install packages available in apt
-        install_package "htop"
-        install_package "neovim" 
-        install_package "ripgrep"
-        install_package "bat"
-        
-        # fd is named fd-find in Ubuntu/Debian
-        if ! dpkg -l | grep -q "^ii  fd-find "; then
-            printf "\n\e[33mfd \e[0mnot found. \e[0mInstalling as fd-find..."
-            sudo apt-get install -y fd-find
-            # Create symlink if it doesn't exist
-            if [ ! -f ~/.local/bin/fd ]; then
-                mkdir -p ~/.local/bin
-                ln -sf /usr/bin/fdfind ~/.local/bin/fd
-            fi
-        else
-            printf "\n\e[0mfd-find \e[0mfound. \e[0mContinuing..."
-        fi
-        ;;
-    centos|rhel|fedora)
-        # Install build tools first
-        install_package "gcc"
-        install_package "gcc-c++"
-        install_package "make"
-        install_package "cmake"
-        
-        install_package "htop"
-        install_package "neovim"
-        install_package "ripgrep" 
-        install_package "bat"
-        install_package "fd-find"
-        ;;
-    arch|manjaro)
-        # Install build tools first
-        install_package "base-devel"
-        install_package "cmake"
-        
-        install_package "htop"
-        install_package "neovim"
-        install_package "ripgrep"
-        install_package "bat"
-        install_package "fd"
-        ;;
-esac
+printf '\n\e[33mInstalling packages with Nix...\e[0m'
 
-# Install Rust (required for some packages)
-if ! command -v rustc &> /dev/null; then
-    printf '\n\e[33mRust not found. \e[0mInstalling Rust...'
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    source ~/.cargo/env
-else
-    printf '\n\e[0mRust found. \e[0mContinuing...'
-fi
+# Install packages using Nix
+for package in "${NIX_PACKAGES[@]}"; do
+    install_nix_package $package
+done
 
-# Install packages that need to be installed via cargo or direct download
-printf '\n\e[33mInstalling additional packages...\e[0m'
-
-# Install eza (ls replacement)
-if ! command -v eza &> /dev/null; then
-    printf '\n\e[33meza \e[0mnot found. \e[0mInstalling...'
-    case $DISTRO in
-        ubuntu|debian)
-            # For Ubuntu 22.04+
-            sudo mkdir -p /etc/apt/keyrings
-            wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-            echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
-            sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
-            sudo apt update
-            sudo apt install -y eza
-            ;;
-        *)
-            cargo install eza
-            ;;
-    esac
-else
-    printf '\n\e[0meza \e[0mfound. \e[0mContinuing...'
-fi
-
-# Install zellij (tmux replacement)
-if ! command -v zellij &> /dev/null; then
-    printf '\n\e[33mzellij \e[0mnot found. \e[0mInstalling...'
-    cargo install zellij
-else
-    printf '\n\e[0mzellij \e[0mfound. \e[0mContinuing...'
-fi
-
-# Install uv (python package manager)
+# Install uv (python package manager) - not available in nixpkgs stable yet
 if ! command -v uv &> /dev/null; then
-    printf '\n\e[33muv \e[0mnot found. \e[0mInstalling...'
+    printf '\n\e[33muv \e[0mnot found. \e[0mInstalling with curl...'
     curl -LsSf https://astral.sh/uv/install.sh | sh
 else
     printf '\n\e[0muv \e[0mfound. \e[0mContinuing...'
-fi
-
-# Install zoxide (cd replacement)
-if ! command -v zoxide &> /dev/null; then
-    printf '\n\e[33mzoxide \e[0mnot found. \e[0mInstalling...'
-    curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-else
-    printf '\n\e[0mzoxide \e[0mfound. \e[0mContinuing...'
-fi
-
-# Install yazi (file manager)
-if ! command -v yazi &> /dev/null; then
-    printf '\n\e[33myazi \e[0mnot found. \e[0mInstalling...'
-    cargo install yazi-fm yazi-cli
-else
-    printf '\n\e[0myazi \e[0mfound. \e[0mContinuing...'
 fi
 
 {{ end }}
