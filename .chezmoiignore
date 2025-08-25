@@ -1,5 +1,6 @@
 {{ if ne .chezmoi.os "darwin" }}
 Library/Application Support/com.mitchellh.ghostty/config
+.config/karabiner/karabiner.json
 {{ end }}
 
 # k8s configuration (managed separately from dotfiles)
