@@ -17,6 +17,7 @@ PACKAGES=(
   "zoxide"   # cd replacement
   "yazi"     # file manager
   "ImageMagick" # image processing
+  "mise"        # multiple package manager
 )
 {{ else }}
 echo "linux script running"
@@ -72,6 +73,7 @@ NIX_PACKAGES=(
     "cargo"         # rust package manager
     "python3"       # python
     "imagemagick"   # image processing
+    "mise"          # multiple package manager
 )
 
 printf '\n\e[33mInstalling packages with Nix...\e[0m'

@@ -156,6 +156,11 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# golang
+if [[ $(which go) ]]; then
+  export PATH="$PATH:$(go env GOPATH)/bin"
+fi
+
 # openssl
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 
@@ -219,6 +224,11 @@ alias docker="podman"
 
 # office k8s settings (loaded from separate file to avoid version control)
 [ -f ~/.k8s-config.zsh ] && source ~/.k8s-config.zsh
+
+# activate mise
+if command -v mise &> /dev/null; then
+  eval "$(mise activate zsh)"
+fi
 
 # zoxide init : should be at the end of the file
 eval "$(zoxide init zsh)"
