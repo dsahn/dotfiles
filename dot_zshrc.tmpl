@@ -120,8 +120,12 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+if [[ -n "$CURSOR_AGENT" ]]; then
+  # Skip theme initialization for better compatibility
+else
+  # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # fzf 키바인딩 커스터마이징
@@ -219,6 +223,15 @@ alias docker="podman"
 
 # office k8s settings (loaded from separate file to avoid version control)
 [ -f ~/.k8s-config.zsh ] && source ~/.k8s-config.zsh
+
+## rancher desktop : 스크립트가 관리하므로 인덴트 무시한 채로 감싸준다
+if [[ -d ~/.rd/bin ]]; then
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/user/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+fi # end of rancher desktop
 
 # zoxide init : should be at the end of the file
 eval "$(zoxide init zsh)"
