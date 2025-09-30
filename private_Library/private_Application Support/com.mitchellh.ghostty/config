@@ -14,15 +14,16 @@
 #
 # Additionally, each config option is also explained in detail
 # on Ghostty's website, at https://ghostty.org/docs/config.
-theme = catppuccin-frappe
-
+theme = Aurora
 
 # Config syntax crash course
 # ==========================
 # # The config file consists of simple key-value pairs,
 # # separated by equals signs.
 # font-family = Iosevka
+font-family = MesloLGS NF
 font-family = D2Coding ligature
+
 # window-padding-x = 2
 #
 # # Spacing around the equals sign does not matter.
