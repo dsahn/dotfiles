@@ -161,7 +161,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # golang
-if [[ $(which go) ]]; then
+# if [[ $(which go) ]]; then
+if command -v go &> /dev/null; then
   export PATH="$PATH:$(go env GOPATH)/bin"
 fi
 
