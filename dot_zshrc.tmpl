@@ -83,8 +83,8 @@ plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
-  kubectl
-  kube-ps1
+  # kubectl disabled for faster startup
+  # kube-ps1 disabled for faster startup
   fzf
 )
 
@@ -155,13 +155,21 @@ export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/sqlite/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/sqlite/include"
 
-# nvm
+# nvm (lazy-load for faster startup)
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+__nvm_lazy_load() {
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+  unset -f nvm node npm npx pnpm yarn corepack __nvm_lazy_load
+}
+for cmd in nvm node npm npx pnpm yarn corepack; do
+  eval "$cmd() { __nvm_lazy_load; $cmd \"$@\"; }"
+done
 
 # golang
-# if [[ $(which go) ]]; then
+# if [[ -d "$HOME/go/bin" ]]; then
+#   export PATH="$PATH:$HOME/go/bin"
+# fi
 if command -v go &> /dev/null; then
   export PATH="$PATH:$(go env GOPATH)/bin"
 fi
