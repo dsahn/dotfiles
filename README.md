@@ -91,7 +91,7 @@ dotfiles for multiple platforms. maintained by chezmoi
 - nvim oil 은 뭐가 달라???!! : 흔적은 남겨놓자
 - `lazy.nvim` 기반 플러그인 로딩
 - `kanagawa` colorscheme
-- `telescope`, `nvim-tree`, `treesitter`
+- `telescope`, `nvim-tree`, `treesitter`, `which-key`
 - `mason`, `lspconfig`, `nvim-cmp`
 - 기본 formatter: `stylua`
 - 기본 LSP: `lua_ls`
@@ -159,12 +159,15 @@ dotfiles for multiple platforms. maintained by chezmoi
 - `<leader>ff` : 파일 찾기
 - `<leader>fg` : 문자열 검색
 - `<leader>fb` : 버퍼 찾기
+- `<leader>fk` : 키맵 찾기 (`:Telescope keymaps`)
 - `<leader>e` : 파일 탐색기
 - `gd` : 정의로 이동
 - `gr` : 참조 찾기
 - `K` : hover 문서
 - `<leader>ca` : 코드 액션
 - `<leader>rn` : 이름 변경
+
+`which-key`를 설치해둬서 `<leader>`를 누르면 사용 가능한 키 조합 힌트를 팝업으로 확인할 수 있다.
 
 ### Rust 개발환경 매뉴얼
 
