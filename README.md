@@ -110,14 +110,12 @@ dotfiles for multiple platforms. maintained by chezmoi
   - `dot_config/nvim/lua/plugins/core.lua`
   - `dot_config/nvim/lua/plugins/lsp.lua`
   - `dot_config/nvim/lua/plugins/cmp.lua`
-- 잠금 파일
-  - `dot_config/nvim/lazy-lock.json`
 
 운영 원칙은 아래처럼 가져간다.
 
 - 플러그인을 추가/삭제할 때는 `lua/plugins/*.lua`만 수정
 - 실제 설치와 동기화는 `lazy.nvim`이 수행
-- 버전 재현성은 `lazy-lock.json`으로 고정
+- `lazy-lock.json`은 dotfiles에서 관리하지 않음(로컬 상태 파일)
 - 플러그인 디렉터리를 `chezmoi`로 직접 vendoring 하지는 않음
 
 ### lazy.nvim 사용법
@@ -134,31 +132,26 @@ dotfiles for multiple platforms. maintained by chezmoi
   ```vim
   :Lazy update
   ```
-- 잠금 파일 기준으로 복원
-  ```vim
-  :Lazy restore
-  ```
 - 상태 확인
   ```vim
   :Lazy health
   ```
 
-### lazy-lock 운영 방식
+### lazy 운영 방식
 
 새 장비에서의 흐름:
 
 1. `chezmoi apply -v`
 2. `nvim` 실행
-3. `:Lazy restore` 또는 `:Lazy sync`
+3. `:Lazy sync`
 
 플러그인을 추가하거나 버전을 올렸을 때의 흐름:
 
 1. `lua/plugins/*.lua` 수정
 2. `nvim` 실행
 3. `:Lazy sync` 또는 `:Lazy update`
-4. 변경된 `lazy-lock.json`을 같이 커밋
 
-이렇게 하면 장비마다 같은 플러그인 버전을 재현하기 쉽다.
+락파일은 각 장비의 로컬 상태로 두고, 필요 시 각 장비에서 동기화한다.
 
 ### 자주 쓰는 키
 
