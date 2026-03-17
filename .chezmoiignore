@@ -5,3 +5,6 @@ Library/Application Support/com.mitchellh.ghostty/config
 
 # k8s configuration (managed separately from dotfiles)
 .k8s-config.zsh
+
+# nvim lazy lockfile (local runtime state)
+.config/nvim/lazy-lock.json

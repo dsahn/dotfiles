@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+
+set -eu
+
+install_with_brew() {
+  for pkg in "$@"; do
+    if ! brew list "$pkg" >/dev/null 2>&1; then
+      brew install "$pkg"
+    fi
+  done
+}
+
+install_with_apt() {
+  sudo apt-get update
+  sudo apt-get install -y "$@"
+}
+
+install_with_dnf() {
+  sudo dnf install -y "$@"
+}
+
+try_install_with_apt() {
+  sudo apt-get install -y "$@" || true
+}
+
+try_install_with_dnf() {
+  sudo dnf install -y "$@" || true
+}
+
+if command -v brew >/dev/null 2>&1; then
+  install_with_brew neovim ripgrep fd fzf make lua-language-server stylua
+elif command -v apt-get >/dev/null 2>&1; then
+  install_with_apt neovim ripgrep fzf make
+  try_install_with_apt fd-find lua-language-server stylua
+elif command -v dnf >/dev/null 2>&1; then
+  install_with_dnf neovim ripgrep fzf make
+  try_install_with_dnf fd-find lua-language-server stylua
+else
+  echo "지원되는 패키지 매니저를 찾지 못했습니다. neovim/ripgrep/fd/fzf/lua-language-server/stylua 를 수동 설치해주세요."
+fi
