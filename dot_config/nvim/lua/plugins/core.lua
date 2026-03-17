@@ -40,14 +40,31 @@ return {
     end,
   },
   {
-    "stevearc/oil.nvim",
+    "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
-      default_file_explorer = true,
-      view_options = {
-        show_hidden = true,
+      hijack_netrw = true,
+      sync_root_with_cwd = true,
+      view = {
+        side = "left",
+        width = 35,
+      },
+      filters = {
+        dotfiles = false,
+      },
+      update_focused_file = {
+        enable = true,
+        update_root = false,
+      },
+      actions = {
+        open_file = {
+          quit_on_open = true,
+        },
       },
     },
+    config = function(_, opts)
+      require("nvim-tree").setup(opts)
+    end,
   },
   {
     "nvim-telescope/telescope.nvim",

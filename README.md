@@ -88,9 +88,10 @@ dotfiles for multiple platforms. maintained by chezmoi
 
 ### 포함한 기본 기능
 
+- nvim oil 은 뭐가 달라???!! : 흔적은 남겨놓자
 - `lazy.nvim` 기반 플러그인 로딩
 - `kanagawa` colorscheme
-- `telescope`, `oil`, `treesitter`
+- `telescope`, `nvim-tree`, `treesitter`
 - `mason`, `lspconfig`, `nvim-cmp`
 - 기본 formatter: `stylua`
 - 기본 LSP: `lua_ls`
