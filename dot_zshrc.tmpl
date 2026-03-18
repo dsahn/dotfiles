@@ -83,13 +83,16 @@ plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
-  fzf
+  # fzf: oh-my-zsh 플러그인 대신 ~/.fzf.zsh 직접 source (더 가벼움)
 )
 
 # kubectl/kube-ps1 플러그인은 kubectl이 있을 때만 로드
 if command -v kubectl &> /dev/null; then
   plugins+=(kubectl kube-ps1)
 fi
+
+# compaudit 보안 감사 비활성화 (매 시작마다 실행되는 오버헤드 절감)
+ZSH_DISABLE_COMPFIX=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -247,9 +250,14 @@ alias docker="podman"
 # office k8s settings (loaded from separate file to avoid version control)
 [ -f ~/.k8s-config.zsh ] && source ~/.k8s-config.zsh 2>/dev/null
 
-# activate mise
+# activate mise (init 결과 캐싱으로 subprocess fork 절감)
 if command -v mise &> /dev/null; then
-  eval "$(mise activate zsh)"
+  _mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise-init.zsh"
+  if [[ ! -f "$_mise_cache" ]] || [[ "$(command -v mise)" -nt "$_mise_cache" ]]; then
+    mise activate zsh > "$_mise_cache"
+  fi
+  source "$_mise_cache"
+  unset _mise_cache
 fi
 
 ## rancher desktop : 스크립트가 관리하므로 인덴트 무시한 채로 감싸준다
@@ -261,8 +269,13 @@ export PATH="/Users/user/.rd/bin:$PATH"
 
 fi # end of rancher desktop
 
-# zoxide init : should be at the end of the file
-eval "$(zoxide init zsh)"
+# zoxide init (init 결과 캐싱)
+_zoxide_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zoxide-init.zsh"
+if [[ ! -f "$_zoxide_cache" ]] || [[ "$(command -v zoxide)" -nt "$_zoxide_cache" ]]; then
+  zoxide init zsh > "$_zoxide_cache"
+fi
+source "$_zoxide_cache"
+unset _zoxide_cache
 
 # android
 if [[ -d $HOME/Library/Android/sdk ]]; then
