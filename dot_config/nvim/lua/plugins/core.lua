@@ -94,7 +94,19 @@ return {
   },
   {
     "lewis6991/gitsigns.nvim",
-    opts = {},
+    opts = {
+      signs_staged_enable = true,
+    },
+  },
+  {
+    "petertriho/nvim-scrollbar",
+    dependencies = { "lewis6991/gitsigns.nvim" },
+    opts = {
+      handlers = {
+        gitsigns = true,
+        diagnostic = true,
+      },
+    },
   },
   {
     "numToStr/Comment.nvim",
