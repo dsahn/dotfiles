@@ -9,31 +9,49 @@ return {
       { "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "File history (repo)" },
       { "<leader>gx", "<cmd>DiffviewClose<cr>", desc = "Close diff view" },
     },
-    opts = {
-      enhanced_diff_hl = true,
-      view = {
-        default = {
-          layout = "diff2_horizontal",
-          winbar_info = true,
+    opts = function()
+      local actions = require("diffview.actions")
+
+      return {
+        enhanced_diff_hl = true,
+        view = {
+          default = {
+            layout = "diff2_horizontal",
+            winbar_info = true,
+          },
+          file_history = {
+            layout = "diff2_horizontal",
+            winbar_info = true,
+          },
+          merge_tool = {
+            layout = "diff3_horizontal",
+            disable_diagnostics = true,
+            winbar_info = true,
+          },
         },
-        file_history = {
-          layout = "diff2_horizontal",
-          winbar_info = true,
+        file_panel = {
+          listing_style = "tree",
+          win_config = {
+            position = "left",
+            width = 35,
+          },
         },
-        merge_tool = {
-          layout = "diff3_horizontal",
-          disable_diagnostics = true,
-          winbar_info = true,
+        keymaps = {
+          view = {
+            { "n", "<C-u>", actions.scroll_view(-0.25), { desc = "Scroll the view up" } },
+            { "n", "<C-d>", actions.scroll_view(0.25), { desc = "Scroll the view down" } },
+          },
+          file_panel = {
+            { "n", "<C-u>", actions.scroll_view(-0.25), { desc = "Scroll the view up" } },
+            { "n", "<C-d>", actions.scroll_view(0.25), { desc = "Scroll the view down" } },
+          },
+          file_history_panel = {
+            { "n", "<C-u>", actions.scroll_view(-0.25), { desc = "Scroll the view up" } },
+            { "n", "<C-d>", actions.scroll_view(0.25), { desc = "Scroll the view down" } },
+          },
         },
-      },
-      file_panel = {
-        listing_style = "tree",
-        win_config = {
-          position = "left",
-          width = 35,
-        },
-      },
-    },
+      }
+    end,
   },
   {
     "NeogitOrg/neogit",
