@@ -155,16 +155,23 @@ export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/sqlite/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/sqlite/include"
 
-# nvm (lazy-load for faster startup)
+# nvm
+# lazy-load 제어: ~/.zshenv 나 세션 시작 전에 세팅
+# NVM_LAZY_LOAD=0 이면 즉시 로드, 기본값은 lazy-load
 export NVM_DIR="$HOME/.nvm"
-__nvm_lazy_load() {
+if [[ "${NVM_LAZY_LOAD:-1}" == "0" ]]; then
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
   [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-  unset -f nvm node npm npx pnpm yarn corepack __nvm_lazy_load
-}
-for cmd in nvm node npm npx pnpm yarn corepack; do
-  eval "$cmd() { __nvm_lazy_load; $cmd \"$@\"; }"
-done
+else
+  __nvm_lazy_load() {
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+    unset -f nvm node npm npx pnpm yarn corepack __nvm_lazy_load
+  }
+  for cmd in nvm node npm npx pnpm yarn corepack; do
+    eval "$cmd() { __nvm_lazy_load; $cmd \"\$@\"; }"
+  done
+fi
 
 # golang
 # if [[ -d "$HOME/go/bin" ]]; then
@@ -222,7 +229,6 @@ alias prv="fzf --preview 'bat --style=numbers --color=always --line-range :500 {
 _fzf_comprun() {
   local command=$1
   shift
-  echo "cmd: $@"
 
   case "$command" in
     cd)           fd --type d | fzf "$@" --preview 'tree -C {} | head -200' ;;
@@ -236,7 +242,7 @@ code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 alias docker="podman"
 
 # office k8s settings (loaded from separate file to avoid version control)
-[ -f ~/.k8s-config.zsh ] && source ~/.k8s-config.zsh
+[ -f ~/.k8s-config.zsh ] && source ~/.k8s-config.zsh 2>/dev/null
 
 # activate mise
 if command -v mise &> /dev/null; then
