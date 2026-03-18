@@ -37,9 +37,32 @@ dotfiles for multiple platforms. maintained by chezmoi
 ## keybindings
 
 - fzf 키바인딩
-  - Ctrl + R (^R): 명령어 히스토리 검색
-  - Ctrl + T (^T): 파일 선택해서 명령줄에 삽입
-  - Alt(option) + C (`^[c`): 디렉터리 선택해서 이동 ,(`^[` : escape)
+  - `Ctrl + R`: 명령어 히스토리 검색
+  - `Ctrl + F`: 파일 선택해서 명령줄에 삽입 (기본 `Ctrl+T`에서 변경)
+  - `Alt(option) + C`: 디렉터리 선택해서 이동
+  - `**` + Tab: fzf 자동완성 트리거 (예: `nvim **<Tab>`)
+
+- zsh vi 모드 (set -o vi)
+  - `Esc`: normal 모드 진입
+  - `v`: normal 모드에서 편집기로 명령어 편집
+
+## zsh 설정 메모
+
+### 시작 속도 최적화
+
+- **fzf**: oh-my-zsh 플러그인 대신 `~/.fzf.zsh` 직접 source
+- **mise/zoxide**: `eval "$(cmd)"` 대신 결과를 `~/.cache/`에 캐싱
+  - 캐시 파일: `~/.cache/mise-init.zsh`, `~/.cache/zoxide-init.zsh`
+  - mise/zoxide 바이너리가 업데이트되면 자동 갱신
+- **compinit**: `ZSH_DISABLE_COMPFIX=true`로 보안 감사 오버헤드 절감
+- **nvm**: lazy-load 적용 — `nvm`, `node`, `npm` 등 첫 사용 시에만 로드
+  - 즉시 로드가 필요한 경우: `NVM_LAZY_LOAD=0 zsh` 또는 `~/.zshenv`에 설정
+- **kubectl/kube-ps1**: `kubectl` 설치 시에만 플러그인 로드
+
+### k8s 환경 분리
+
+회사 k8s 설정은 `~/.k8s-config.zsh`에 별도 관리 (chezmoi 비관리 대상).
+템플릿에서 `source ~/.k8s-config.zsh 2>/dev/null` 으로 로드 (없으면 스킵).
 
 ## 자주쓸것들
 
