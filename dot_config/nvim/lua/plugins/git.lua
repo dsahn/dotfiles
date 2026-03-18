@@ -65,12 +65,12 @@ return {
       { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit (git status)" },
     },
     opts = {
-      kind = "split",
+      kind = "floating",
       commit_editor = {
-        kind = "split",
+        kind = "tab",
       },
       preview_buffer = {
-        kind = "split",
+        kind = "floating",
       },
       integrations = {
         diffview = true,
