@@ -111,13 +111,53 @@ dotfiles for multiple platforms. maintained by chezmoi
 
 ### 포함한 기본 기능
 
-- nvim oil 은 뭐가 달라???!! : 흔적은 남겨놓자
 - `lazy.nvim` 기반 플러그인 로딩
 - `kanagawa` colorscheme
-- `telescope`, `nvim-tree`, `treesitter`, `which-key`
-- `mason`, `lspconfig`, `nvim-cmp`
+- `telescope` + `telescope-fzf-native` (파일/문자열 검색)
+- `nvim-tree` (사이드바 파일 탐색기)
+- `treesitter` (문법 하이라이팅/들여쓰기)
+- `which-key` (리더키 힌트 팝업)
+- `lualine` (상태바)
+- `gitsigns` (git 변경 표시)
+- `mason` + `lspconfig` + `nvim-cmp` (LSP, 자동완성)
+- `conform.nvim` (저장 시 자동 포맷)
+- `LuaSnip` + `friendly-snippets` (스니펫)
+- `Comment.nvim`, `nvim-autopairs`
 - 기본 formatter: `stylua`
 - 기본 LSP: `lua_ls`
+
+### LazyVim 플러그인 참고 목록
+
+LazyVim 사용 중 유용했던 플러그인들. 필요 시 `lua/plugins/`에 추가.
+
+**UI / 편의**
+- [`folke/noice.nvim`](https://github.com/folke/noice.nvim) — cmdline, 메시지, 팝업 UI를 통합 개선
+- [`akinsho/bufferline.nvim`](https://github.com/akinsho/bufferline.nvim) — 버퍼를 탭처럼 표시
+- [`lukas-reineke/indent-blankline.nvim`](https://github.com/lukas-reineke/indent-blankline.nvim) — 들여쓰기 가이드 라인
+- [`nvimdev/dashboard-nvim`](https://github.com/nvimdev/dashboard-nvim) — 시작 화면
+- [`norcalli/nvim-colorizer.lua`](https://github.com/norcalli/nvim-colorizer.lua) — hex 색상 코드 미리보기
+
+**탐색 / 이동**
+- [`folke/flash.nvim`](https://github.com/folke/flash.nvim) — `s`키로 화면 내 빠른 점프 (easymotion 대체)
+- [`stevearc/oil.nvim`](https://github.com/stevearc/oil.nvim) — 파일시스템을 버퍼처럼 편집 (nvim-tree 대안)
+
+**진단 / Git**
+- [`folke/trouble.nvim`](https://github.com/folke/trouble.nvim) — LSP 진단/참조/quickfix 목록 UI
+- [`folke/todo-comments.nvim`](https://github.com/folke/todo-comments.nvim) — TODO/FIXME 하이라이팅 + telescope 연동
+- [`kdheepak/lazygit.nvim`](https://github.com/kdheepak/lazygit.nvim) — nvim 안에서 lazygit 실행
+
+**편집**
+- [`kylechui/nvim-surround`](https://github.com/kylechui/nvim-surround) — 괄호/따옴표 감싸기/변경/제거 (`cs"'`, `ds(` 등)
+- [`echasnovski/mini.ai`](https://github.com/echasnovski/mini.ai) — `a`/`i` 텍스트 오브젝트 확장 (함수, 클래스 단위 선택)
+- [`mfussenegger/nvim-lint`](https://github.com/mfussenegger/nvim-lint) — 언어별 linter 연동 (eslint, shellcheck 등)
+
+**언어 지원 (LSP 추가)**
+- `ts_ls` — TypeScript/JavaScript
+- `pyright` — Python
+- `rust_analyzer` — Rust (rustup component add rust-analyzer)
+- `clangd` — C/C++
+- `gopls` — Go
+> mason에서 설치 후 `lsp.lua`의 `ensure_installed`와 `vim.lsp.enable()`에 추가
 
 플러그인 설치는 수동 git clone 방식 대신 `lazy.nvim`에 전부 의존한다. 플러그인 목록과 설정은 dotfiles에서 관리하고, 실제 설치/업데이트/버전 고정은 Neovim 내부에서 처리한다.
 
