@@ -83,10 +83,13 @@ plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
-  # kubectl disabled for faster startup
-  # kube-ps1 disabled for faster startup
   fzf
 )
+
+# kubectl/kube-ps1 플러그인은 kubectl이 있을 때만 로드
+if command -v kubectl &> /dev/null; then
+  plugins+=(kubectl kube-ps1)
+fi
 
 source $ZSH/oh-my-zsh.sh
 
