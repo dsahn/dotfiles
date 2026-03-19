@@ -18,7 +18,6 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    commit = "2cc172c28e5550e00e6beead4599b1469469c1c7",
     build = ":TSUpdate",
     opts = {
       ensure_installed = {
