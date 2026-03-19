@@ -1,0 +1,48 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+printf '\n\e[33mInstalling common packages for all systems...\e[0m'
+
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  printf '\n\e[33mOh-my-zsh not found. \e[0mInstalling Oh-my-zsh...'
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+  printf '\n\e[0mOh-my-zsh found. \e[0mContinuing...'
+fi
+
+if [ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ]; then
+  git clone https://github.com/zsh-users/zsh-autosuggestions \
+    "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+else
+  printf '\n\e[0mzsh-autosuggestions found. \e[0mContinuing...'
+fi
+
+if [ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]; then
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+    "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+else
+  printf '\n\e[0mzsh-syntax-highlighting found. \e[0mContinuing...'
+fi
+
+if [ ! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+    "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+else
+  printf '\n\e[0mpowerlevel10k found. \e[0mContinuing...'
+fi
+
+if [ ! -d "$HOME/.fzf" ]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install
+else
+  printf '\n\e[0mfzf found. \e[0mContinuing...'
+fi
+
+if [ ! -d "$HOME/.bun" ]; then
+  curl -fsSL https://bun.sh/install | bash
+else
+  printf '\n\e[0mbun found. \e[0mContinuing...'
+fi
+
+[ -s "{{ .chezmoi.homeDir }}/.bun/_bun" ] && source "{{ .chezmoi.homeDir }}/.bun/_bun"

@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+{{ if ne .chezmoi.os "darwin" }}
+set -euo pipefail
+
+echo "linux script running"
+
+NIX_DAEMON_PROFILE="/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+NIX_CONF_DIR="$HOME/.config/nix"
+NIX_CONF_FILE="$NIX_CONF_DIR/nix.conf"
+FLAKE_DIR="{{ .chezmoi.sourceDir }}/dot_config/nix"
+
+if ! command -v nix >/dev/null 2>&1; then
+  printf '\n\e[33mNix not found. \e[0mInstalling Nix package manager...'
+  curl -L https://nixos.org/nix/install | sh -s -- --daemon
+else
+  printf '\n\e[0mNix found. \e[0mContinuing...'
+fi
+
+if [ -e "$NIX_DAEMON_PROFILE" ]; then
+  . "$NIX_DAEMON_PROFILE"
+fi
+
+mkdir -p "$NIX_CONF_DIR"
+if [ ! -f "$NIX_CONF_FILE" ]; then
+  printf "experimental-features = nix-command flakes\n" > "$NIX_CONF_FILE"
+elif ! grep -q "experimental-features" "$NIX_CONF_FILE"; then
+  printf "experimental-features = nix-command flakes\n" >> "$NIX_CONF_FILE"
+elif ! grep -Eq "experimental-features.*nix-command.*flakes" "$NIX_CONF_FILE"; then
+  printf "experimental-features = nix-command flakes\n" >> "$NIX_CONF_FILE"
+fi
+
+if [ ! -f "$FLAKE_DIR/flake.nix" ]; then
+  printf "\n\e[31mflake.nix not found at %s\e[0m\n" "$FLAKE_DIR"
+  exit 1
+fi
+
+printf '\n\e[33mInstalling Linux packages from flake...\e[0m'
+nix profile install "$FLAKE_DIR#default"
+{{ end }}

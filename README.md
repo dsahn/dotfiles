@@ -34,6 +34,34 @@ dotfiles for multiple platforms. maintained by chezmoi
   - 필요한 것들도 같이 깔아주지
 - ? 회사환경/아닌환경 나눠서 뭔가 하려고했는디..
 
+## 패키지 설치 관리 방식
+
+- macOS 패키지 목록: `dot_Brewfile`
+  - 설치는 `.chezmoiscripts/run_once_before_01_install-packages-darwin.sh.tmpl`에서
+    `brew bundle --file <source Brewfile>`로 수행
+- Linux 패키지 목록: `dot_config/nix/flake.nix`
+  - 설치는 `.chezmoiscripts/run_once_before_01_install-packages-linux.sh.tmpl`에서
+    `nix profile install <flake>#default`로 수행
+- 공통 설치(oh-my-zsh, fzf, bun 등):
+  `.chezmoiscripts/run_once_before_02_install-common.sh.tmpl`
+
+### 실행 예시
+
+```sh
+# 전체 적용 (OS별 패키지 + 공통 설치가 run_once 스크립트로 자동 실행)
+chezmoi apply -v
+```
+
+```sh
+# macOS: Brewfile만 수동 실행
+brew bundle --file ~/.Brewfile
+```
+
+```sh
+# Linux: flake 패키지만 수동 설치
+nix profile install ~/.config/nix#default
+```
+
 ## keybindings
 
 - fzf 키바인딩

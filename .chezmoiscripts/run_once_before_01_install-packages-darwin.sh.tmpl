@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+{{ if eq .chezmoi.os "darwin" }}
+set -euo pipefail
+
+echo "macos script running"
+
+BREWFILE="{{ .chezmoi.sourceDir }}/dot_Brewfile"
+
+if ! command -v brew >/dev/null 2>&1; then
+  printf '\e[33mHomebrew not found. \e[0mInstalling Homebrew...'
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+  printf '\e[0mHomebrew found. \e[0mContinuing...'
+fi
+
+if [ ! -f "$BREWFILE" ]; then
+  printf "\n\e[31mBrewfile not found at %s\e[0m\n" "$BREWFILE"
+  exit 1
+fi
+
+printf '\n\e[33mInstalling brew packages from Brewfile...\e[0m'
+brew bundle --file="$BREWFILE"
+{{ end }}
