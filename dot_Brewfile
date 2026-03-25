@@ -1,6 +1,3 @@
-tap "homebrew/core"
-tap "homebrew/cask"
-
 brew "bat"
 brew "eza"
 brew "fd"
