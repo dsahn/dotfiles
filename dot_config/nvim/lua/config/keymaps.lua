@@ -25,6 +25,25 @@ local function telescope_live_grep_this_dir()
   })
 end
 
+local function open_cli_split(candidates, label)
+  local cmd = nil
+  for _, c in ipairs(candidates) do
+    if vim.fn.executable(c) == 1 then
+      cmd = c
+      break
+    end
+  end
+
+  if not cmd then
+    vim.notify(label .. " CLI를 찾을 수 없습니다: " .. table.concat(candidates, ", "), vim.log.levels.WARN)
+    return
+  end
+
+  vim.cmd("botright 12split")
+  vim.fn.termopen({ cmd })
+  vim.cmd("startinsert")
+end
+
 map("n", "<leader>w", "<cmd>write<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>quit<cr>", { desc = "Quit window" })
 map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer sidebar" })
@@ -45,6 +64,11 @@ map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 
 -- VSCode-like paste on selection: keep clipboard contents after replacing text.
 map("x", "p", [["_dP]], { desc = "Paste without overriding clipboard" })
+
+-- External AI CLI launchers.
+map("n", "<leader>ao", function()
+  open_cli_split({ "opencode" }, "opencode")
+end, { desc = "Open opencode CLI (split)" })
 
 -- gitsigns: hunk 이동 (gitsigns 로드 후 사용 가능)
 map("n", "]h", "<cmd>Gitsigns next_hunk<cr>", { desc = "Next git hunk" })
