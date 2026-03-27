@@ -22,8 +22,8 @@ dotfiles for multiple platforms. maintained by chezmoi
 - [x] zsh-dependencies(fzf, powershell, ..)
 - [x] ghostty settings
 - [x] 패키지 매니저 설치(brew, cask) 및 설치스크립트 작성
-- [ ] karabiner 세팅(darwin)
-- [ ] vimrc(nvim)
+- [x] karabiner 세팅(darwin)
+- [x] vimrc(nvim)
   - [x] 개별 스트립트로 작성, 설치 여부 확인하기
   - [x] 최소 Lua 기반 nvim 설정 추가
   - [x] nvim + rust 환경 구축 문서화
