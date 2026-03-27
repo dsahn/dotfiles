@@ -19,8 +19,8 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    opts = {
-      ensure_installed = {
+    opts = function()
+      local base = {
         "bash",
         "json",
         "lua",
@@ -29,11 +29,33 @@ return {
         "toml",
         "vim",
         "yaml",
-      },
-      auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
-    },
+      }
+      local ok, machine = pcall(require, "config.machine")
+      local langs = ok and machine.languages or {}
+      local profiles = require("config.lang_profiles")
+      local seen = {}
+      local parsers = {}
+      for _, p in ipairs(base) do
+        if not seen[p] then
+          seen[p] = true
+          parsers[#parsers + 1] = p
+        end
+      end
+      for _, lang in ipairs(langs) do
+        for _, p in ipairs(profiles.treesitter[lang] or {}) do
+          if not seen[p] then
+            seen[p] = true
+            parsers[#parsers + 1] = p
+          end
+        end
+      end
+      return {
+        ensure_installed = parsers,
+        auto_install = true,
+        highlight = { enable = true },
+        indent = { enable = true },
+      }
+    end,
     config = function(_, opts)
       require("nvim-treesitter").setup(opts)
     end,
