@@ -43,6 +43,9 @@ map("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 
+-- VSCode-like paste on selection: keep clipboard contents after replacing text.
+map("x", "p", [["_dP]], { desc = "Paste without overriding clipboard" })
+
 -- gitsigns: hunk 이동 (gitsigns 로드 후 사용 가능)
 map("n", "]h", "<cmd>Gitsigns next_hunk<cr>", { desc = "Next git hunk" })
 map("n", "[h", "<cmd>Gitsigns prev_hunk<cr>", { desc = "Prev git hunk" })
