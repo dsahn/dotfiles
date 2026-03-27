@@ -1,10 +1,37 @@
 local map = vim.keymap.set
 
+--- Directory of the current buffer, or cwd if the buffer has no path.
+local function buffer_dir()
+  local path = vim.api.nvim_buf_get_name(0)
+  if path ~= "" then
+    return vim.fn.fnamemodify(path, ":p:h")
+  end
+  return vim.fn.getcwd()
+end
+
+local function telescope_find_files_this_dir()
+  local dir = buffer_dir()
+  require("telescope.builtin").find_files({
+    search_dirs = { dir },
+    prompt_title = "Files (" .. vim.fn.fnamemodify(dir, ":~") .. ")",
+  })
+end
+
+local function telescope_live_grep_this_dir()
+  local dir = buffer_dir()
+  require("telescope.builtin").live_grep({
+    search_dirs = { dir },
+    prompt_title = "Grep (" .. vim.fn.fnamemodify(dir, ":~") .. ")",
+  })
+end
+
 map("n", "<leader>w", "<cmd>write<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>quit<cr>", { desc = "Quit window" })
 map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer sidebar" })
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
+map("n", "<leader>fd", telescope_find_files_this_dir, { desc = "Find files (this directory)" })
 map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
+map("n", "<leader>fs", telescope_live_grep_this_dir, { desc = "Live grep (this directory)" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
 map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help tags" })
