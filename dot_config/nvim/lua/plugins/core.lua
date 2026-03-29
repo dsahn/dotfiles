@@ -166,42 +166,6 @@ return {
     "xTacobaco/cursor-agent.nvim",
     commit = "e0b86624ccfd5f98af46a780049037fa07521331",
     cmd = { "CursorAgent", "CursorAgentSelection", "CursorAgentBuffer" },
-    keys = {
-      {
-        "<leader>ac",
-        function()
-          if vim.fn.executable("cursor-agent") ~= 1 then
-            vim.notify("cursor-agent CLI가 설치되지 않았습니다", vim.log.levels.WARN)
-            return
-          end
-          vim.cmd("CursorAgent")
-        end,
-        desc = "Open Cursor Agent (float)",
-      },
-      {
-        "<leader>aC",
-        function()
-          if vim.fn.executable("cursor-agent") ~= 1 then
-            vim.notify("cursor-agent CLI가 설치되지 않았습니다", vim.log.levels.WARN)
-            return
-          end
-          vim.cmd("CursorAgentBuffer")
-        end,
-        desc = "Send buffer to Cursor Agent",
-      },
-      {
-        "<leader>ac",
-        function()
-          if vim.fn.executable("cursor-agent") ~= 1 then
-            vim.notify("cursor-agent CLI가 설치되지 않았습니다", vim.log.levels.WARN)
-            return
-          end
-          vim.cmd("CursorAgentSelection")
-        end,
-        mode = "v",
-        desc = "Send selection to Cursor Agent",
-      },
-    },
     config = function()
       require("cursor-agent").setup({
         cmd = "cursor-agent",

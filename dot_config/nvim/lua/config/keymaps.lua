@@ -70,6 +70,45 @@ map("n", "<leader>ao", function()
   open_cli_split({ "opencode" }, "opencode")
 end, { desc = "Open opencode CLI (split)" })
 
+-- Claude Code → Codex → Cursor Agent (float). Selection/buffer 전송은 cursor-agent 전용.
+local function open_ai_agent_primary()
+  for _, bin in ipairs({ "claude", "codex" }) do
+    if vim.fn.executable(bin) == 1 then
+      vim.cmd("botright 12split")
+      vim.fn.termopen({ bin })
+      vim.cmd("startinsert")
+      return
+    end
+  end
+  if vim.fn.executable("cursor-agent") == 1 then
+    vim.cmd("CursorAgent")
+    return
+  end
+  vim.notify("AI CLI를 찾을 수 없습니다 (순서: claude, codex, cursor-agent)", vim.log.levels.WARN)
+end
+
+local function cursor_agent_buffer_cmds_ok()
+  if vim.fn.executable("cursor-agent") ~= 1 then
+    vim.notify("선택/버퍼 전송은 cursor-agent가 필요합니다", vim.log.levels.WARN)
+    return false
+  end
+  return true
+end
+
+map("n", "<leader>ac", open_ai_agent_primary, { desc = "AI agent: claude → codex → cursor-agent" })
+map("v", "<leader>ac", function()
+  if not cursor_agent_buffer_cmds_ok() then
+    return
+  end
+  vim.cmd("CursorAgentSelection")
+end, { desc = "Send selection to Cursor Agent" })
+map("n", "<leader>aC", function()
+  if not cursor_agent_buffer_cmds_ok() then
+    return
+  end
+  vim.cmd("CursorAgentBuffer")
+end, { desc = "Send buffer to Cursor Agent" })
+
 -- gitsigns: hunk 이동 (gitsigns 로드 후 사용 가능)
 map("n", "]h", "<cmd>Gitsigns next_hunk<cr>", { desc = "Next git hunk" })
 map("n", "[h", "<cmd>Gitsigns prev_hunk<cr>", { desc = "Prev git hunk" })
