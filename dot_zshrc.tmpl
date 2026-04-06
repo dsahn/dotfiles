@@ -91,9 +91,9 @@ plugins=(
   # fzf: oh-my-zsh 플러그인 대신 ~/.fzf.zsh 직접 source (더 가벼움)
 )
 
-# kubectl/kube-ps1 플러그인은 kubectl이 있을 때만 로드
+# kubectl 플러그인만 로드(kube-ps1 미사용 — 프롬프트는 p10k kubecontext)
 if command -v kubectl &> /dev/null; then
-  plugins+=(kubectl kube-ps1)
+  plugins+=(kubectl)
 fi
 
 # compfix(compaudit 안내 UI) 비활성화. compaudit 본연 호출은 site-functions/compinit 래퍼(-C)로 완화
