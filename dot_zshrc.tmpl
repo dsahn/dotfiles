@@ -152,7 +152,16 @@ if [[ -d "$HOME/Library/Android/sdk" ]]; then
   export PATH=$PATH:$ANDROID_HOME/platform-tools
   export PATH=$PATH:$ANDROID_HOME/emulator
 fi
-[[ ! -f /usr/libexec/java_home ]] || export JAVA_HOME=$(/usr/libexec/java_home -v17)
+# JAVA_HOME (darwin): 미설정 시 brew opt 경로만 -d로 확인(포크 없음), 없으면 java_home -v17
+if [[ -z "${JAVA_HOME:-}" ]]; then
+  if [[ -d /opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ]]; then
+    export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+  elif [[ -d /usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home ]]; then
+    export JAVA_HOME=/usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+  elif [[ -x /usr/libexec/java_home ]]; then
+    export JAVA_HOME="$(/usr/libexec/java_home -v17 2>/dev/null)"
+  fi
+fi
 {{ end }}
 
 export PATH=$PATH:~/.bun/bin
