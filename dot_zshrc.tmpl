@@ -5,6 +5,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# .zshrc 시작~끝 구간 CPU 시간 프로파일 (평소에는 비활성, 오버헤드 없음)
+# 사용: ZSH_PROFILE_RC=1 zsh -i -c exit
+# 벽시계까지 보려면: command time ZSH_PROFILE_RC=1 zsh -i -c exit
+if [[ -n "${ZSH_PROFILE_RC:-}" ]]; then
+  zmodload zsh/zprof
+fi
+
+# compinit -C 주입: compaudit/덤프 정합 검사 생략 (NFS·다수 fpath에서 체감 큼)
+# 래퍼는 ~/.local/share/zsh/site-functions/compinit (chezmoi가 배포)
+export _ZSH_SITE_FUNCTIONS="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/site-functions"
+[[ -d "$_ZSH_SITE_FUNCTIONS" ]] && fpath=("$_ZSH_SITE_FUNCTIONS" $fpath)
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$HOME/.fzf/bin:$PATH
@@ -91,7 +103,7 @@ if command -v kubectl &> /dev/null; then
   plugins+=(kubectl kube-ps1)
 fi
 
-# compaudit 보안 감사 비활성화 (매 시작마다 실행되는 오버헤드 절감)
+# compfix(compaudit 안내 UI) 비활성화. compaudit 본연 호출은 site-functions/compinit 래퍼(-C)로 완화
 ZSH_DISABLE_COMPFIX=true
 
 source $ZSH/oh-my-zsh.sh
@@ -250,14 +262,43 @@ alias docker="podman"
 # office k8s settings (loaded from separate file to avoid version control)
 [ -f ~/.k8s-config.zsh ] && source ~/.k8s-config.zsh 2>/dev/null
 
-# activate mise (init 결과 캐싱으로 subprocess fork 절감)
+# mise: 기본은 지연 로드(시작 시 mise 관련 source 없음). 첫 `mise` 호출 때 활성화.
+# 항상 켜두려면 MISE_LAZY_LOAD=0 (~/.zshenv 등). 훅 방식은 MISE_USE_SHIMS=0.
 if command -v mise &> /dev/null; then
-  _mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise-init.zsh"
-  if [[ ! -f "$_mise_cache" ]] || [[ "$(command -v mise)" -nt "$_mise_cache" ]]; then
-    mise activate zsh > "$_mise_cache"
+  if [[ "${MISE_LAZY_LOAD:-1}" == "0" ]]; then
+    if [[ "${MISE_USE_SHIMS:-1}" == "1" ]]; then
+      _mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise-init-shims.zsh"
+      _mise_activate_cmd=(mise activate zsh --shims)
+    else
+      _mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise-init-hook.zsh"
+      _mise_activate_cmd=(mise activate zsh)
+    fi
+    if [[ ! -f "$_mise_cache" ]] || [[ "$(command -v mise)" -nt "$_mise_cache" ]]; then
+      "${_mise_activate_cmd[@]}" > "$_mise_cache"
+    fi
+    source "$_mise_cache"
+    unset _mise_cache _mise_activate_cmd
+  else
+    if [[ "${MISE_USE_SHIMS:-1}" == "1" ]]; then
+      _mise_lazy_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise-init-shims.zsh"
+      _mise_lazy_flags=(zsh --shims)
+    else
+      _mise_lazy_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise-init-hook.zsh"
+      _mise_lazy_flags=(zsh)
+    fi
+    mise() {
+      unset -f mise
+      local _mbin
+      _mbin="$(command -v mise)"
+      if [[ ! -f "$_mise_lazy_cache" ]] || [[ "$_mbin" -nt "$_mise_lazy_cache" ]]; then
+        "$_mbin" activate "${_mise_lazy_flags[@]}" > "$_mise_lazy_cache"
+      fi
+      source "$_mise_lazy_cache"
+      mise "$@"
+    }
+    # 셸 띄운 뒤 shims/PATH만 켜고 싶을 때(명령 없이): mise_on
+    mise_on() { mise --version >/dev/null; }
   fi
-  source "$_mise_cache"
-  unset _mise_cache
 fi
 
 ## rancher desktop : 스크립트가 관리하므로 인덴트 무시한 채로 감싸준다
@@ -281,4 +322,8 @@ unset _zoxide_cache
 if [[ -d $HOME/Library/Android/sdk ]]; then
   export ANDROID_HOME=$HOME/Library/Android/sdk
   export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
+fi
+
+if [[ -n "${ZSH_PROFILE_RC:-}" ]]; then
+  zprof
 fi
