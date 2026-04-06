@@ -184,13 +184,25 @@ else
   done
 fi
 
-# golang
-# if [[ -d "$HOME/go/bin" ]]; then
-#   export PATH="$PATH:$HOME/go/bin"
-# fi
-if command -v go &> /dev/null; then
-  export PATH="$PATH:$(go env GOPATH)/bin"
+# golang: GOPATH·~/go/bin 등 디렉터리가 있으면 그때만 PATH에 넣고, 없을 때만 go env
+_golang_bins=()
+if [[ -n ${GOPATH:-} ]]; then
+  for _golang_p in ${(s.:.)GOPATH}; do
+    [[ -n $_golang_p && -d "$_golang_p/bin" ]] && _golang_bins+=("$_golang_p/bin")
+  done
 fi
+[[ -d "$HOME/go/bin" ]] && _golang_bins+=("$HOME/go/bin")
+_golang_bins=(${(u)_golang_bins})
+if (( $#_golang_bins )); then
+  export PATH="${PATH}:${(j.:.)_golang_bins}"
+elif command -v go &> /dev/null; then
+  _golang_gp="$(go env GOPATH 2>/dev/null)"
+  for _golang_p in ${(s.:.)_golang_gp}; do
+    [[ -n $_golang_p && -d "$_golang_p/bin" ]] && export PATH="$PATH:$_golang_p/bin"
+  done
+  unset _golang_gp
+fi
+unset _golang_bins _golang_p
 
 # openssl
 export PATH="/usr/local/opt/openssl/bin:$PATH"
