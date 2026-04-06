@@ -229,7 +229,15 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # fzf
 export FZF_DEFAULT_COMMAND='fd --type f'
 
+# 편집 모드: 라인 에디터를 vi 키바인딩으로 (Esc=normal, normal에서 v=버퍼 편집 등)
 set -o vi
+# ZLE 위젯: 현재 명령줄 전체를 외부 편집기로 열기 (bash C-x C-e, Ctrl+X Ctrl+E)
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M viins '^X^E' edit-command-line
+bindkey -M vicmd '^X^E' edit-command-line
+
+# aliases
 alias vi="nvim"
 alias vim="nvim"
 alias cat="bat"

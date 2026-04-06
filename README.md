@@ -74,6 +74,7 @@ nix profile install ~/.config/nix#default
 - zsh vi 모드 (set -o vi)
   - `Esc`: normal 모드 진입
   - `v`: normal 모드에서 편집기로 명령어 편집
+  - `Ctrl+X` `Ctrl+E`: insert/normal 모두에서 명령줄 전체를 `$VISUAL`/`$EDITOR`(nvim)로 편집
 
 ## zsh 설정 메모
 
