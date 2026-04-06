@@ -5,13 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# .zshrc 시작~끝 구간 CPU 시간 프로파일 (평소에는 비활성, 오버헤드 없음)
-# 사용: ZSH_PROFILE_RC=1 zsh -i -c exit
-# 벽시계까지 보려면: command time ZSH_PROFILE_RC=1 zsh -i -c exit
-if [[ -n "${ZSH_PROFILE_RC:-}" ]]; then
-  zmodload zsh/zprof
-fi
-
 # compinit -C 주입: compaudit/덤프 정합 검사 생략 (NFS·다수 fpath에서 체감 큼)
 # 래퍼는 ~/.local/share/zsh/site-functions/compinit (chezmoi가 배포)
 export _ZSH_SITE_FUNCTIONS="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/site-functions"
@@ -322,8 +315,4 @@ unset _zoxide_cache
 if [[ -d $HOME/Library/Android/sdk ]]; then
   export ANDROID_HOME=$HOME/Library/Android/sdk
   export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
-fi
-
-if [[ -n "${ZSH_PROFILE_RC:-}" ]]; then
-  zprof
 fi

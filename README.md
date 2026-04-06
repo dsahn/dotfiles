@@ -87,6 +87,7 @@ nix profile install ~/.config/nix#default
 - **nvm**: lazy-load 적용 — `nvm`, `node`, `npm` 등 첫 사용 시에만 로드
   - 즉시 로드가 필요한 경우: `NVM_LAZY_LOAD=0 zsh` 또는 `~/.zshenv`에 설정
 - **kubectl/kube-ps1**: `kubectl` 설치 시에만 플러그인 로드
+- **측정**: `zprof`·벽시계로 시작 병목을 보려면 [zsh 시작 성능 측정 가이드](docs/zsh-startup-profiling.md) 참고
 
 ### k8s 환경 분리
 
