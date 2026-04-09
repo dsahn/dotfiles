@@ -62,7 +62,41 @@ return {
     },
     cmd = "Neogit",
     keys = {
-      { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit (git status)" },
+      {
+        "<leader>gg",
+        function()
+          require("neogit").open()
+        end,
+        desc = "Neogit status",
+      },
+      {
+        "<leader>gc",
+        function()
+          require("neogit").open({ "commit" })
+        end,
+        desc = "Neogit commit popup",
+      },
+      {
+        "<leader>gB",
+        function()
+          require("neogit").open({ "branch" })
+        end,
+        desc = "Neogit branch popup",
+      },
+      {
+        "<leader>gP",
+        function()
+          require("neogit").open({ "push" })
+        end,
+        desc = "Neogit push popup",
+      },
+      {
+        "<leader>gl",
+        function()
+          require("neogit").open({ "log" })
+        end,
+        desc = "Neogit log popup",
+      },
     },
     opts = {
       kind = "floating",
