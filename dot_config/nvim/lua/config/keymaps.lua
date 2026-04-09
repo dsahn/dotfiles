@@ -17,9 +17,129 @@ local function telescope_find_files_this_dir()
   })
 end
 
+local function telescope_find_hidden_files()
+  require("telescope.builtin").find_files({
+    hidden = true,
+    prompt_title = "Files (hidden)",
+  })
+end
+
+local function telescope_find_hidden_files_this_dir()
+  local dir = buffer_dir()
+  require("telescope.builtin").find_files({
+    hidden = true,
+    search_dirs = { dir },
+    prompt_title = "Files (hidden, " .. vim.fn.fnamemodify(dir, ":~") .. ")",
+  })
+end
+
 local function telescope_live_grep_this_dir()
   local dir = buffer_dir()
   require("telescope.builtin").live_grep({
+    search_dirs = { dir },
+    prompt_title = "Grep (" .. vim.fn.fnamemodify(dir, ":~") .. ")",
+  })
+end
+
+local function telescope_live_grep_hidden()
+  require("telescope.builtin").live_grep({
+    additional_args = function()
+      return { "--hidden", "--glob", "!.git/*" }
+    end,
+    prompt_title = "Grep (hidden)",
+  })
+end
+
+local function telescope_live_grep_hidden_this_dir()
+  local dir = buffer_dir()
+  require("telescope.builtin").live_grep({
+    search_dirs = { dir },
+    additional_args = function()
+      return { "--hidden", "--glob", "!.git/*" }
+    end,
+    prompt_title = "Grep (hidden, " .. vim.fn.fnamemodify(dir, ":~") .. ")",
+  })
+end
+
+local function toggleable_find_files(opts)
+  local actions = require("telescope.actions")
+  local action_state = require("telescope.actions.state")
+  local builtin = require("telescope.builtin")
+  opts = vim.tbl_extend("force", { hidden = false }, opts or {})
+  local picker_opts = vim.deepcopy(opts)
+  picker_opts.prompt_title = opts.prompt_title
+  picker_opts.attach_mappings = function(prompt_bufnr, map_telescope)
+    local function reopen_with_hidden()
+      local prompt = action_state.get_current_line()
+      actions.close(prompt_bufnr)
+      opts.hidden = not opts.hidden
+      if prompt ~= "" then
+        opts.default_text = prompt
+      end
+      toggleable_find_files(opts)
+    end
+
+    map_telescope("i", "<M-h>", reopen_with_hidden)
+    map_telescope("n", "<M-h>", reopen_with_hidden)
+    return true
+  end
+  builtin.find_files(picker_opts)
+end
+
+local function toggleable_live_grep(opts)
+  local actions = require("telescope.actions")
+  local action_state = require("telescope.actions.state")
+  local builtin = require("telescope.builtin")
+  opts = vim.tbl_extend("force", { hidden = false }, opts or {})
+  local picker_opts = vim.deepcopy(opts)
+  picker_opts.prompt_title = opts.prompt_title
+  picker_opts.additional_args = function()
+    if opts.hidden then
+      return { "--hidden", "--glob", "!.git/*" }
+    end
+    return {}
+  end
+  picker_opts.attach_mappings = function(prompt_bufnr, map_telescope)
+    local function reopen_with_hidden()
+      local prompt = action_state.get_current_line()
+      actions.close(prompt_bufnr)
+      opts.hidden = not opts.hidden
+      if prompt ~= "" then
+        opts.default_text = prompt
+      end
+      toggleable_live_grep(opts)
+    end
+
+    map_telescope("i", "<M-h>", reopen_with_hidden)
+    map_telescope("n", "<M-h>", reopen_with_hidden)
+    return true
+  end
+  builtin.live_grep(picker_opts)
+end
+
+local function telescope_find_files_toggle()
+  toggleable_find_files({
+    prompt_title = "Find Files",
+  })
+end
+
+local function telescope_find_files_this_dir_toggle()
+  local dir = buffer_dir()
+  toggleable_find_files({
+    search_dirs = { dir },
+    prompt_title = "Files (" .. vim.fn.fnamemodify(dir, ":~") .. ")",
+  })
+end
+
+local function telescope_live_grep_toggle()
+  toggleable_live_grep({
+    prompt_title = "Live Grep",
+  })
+end
+
+local function telescope_live_grep_this_dir_toggle()
+  local dir = buffer_dir()
+  toggleable_live_grep({
     search_dirs = { dir },
     prompt_title = "Grep (" .. vim.fn.fnamemodify(dir, ":~") .. ")",
   })
@@ -47,10 +167,14 @@ end
 map("n", "<leader>w", "<cmd>write<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>quit<cr>", { desc = "Quit window" })
 map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer sidebar" })
-map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
-map("n", "<leader>fd", telescope_find_files_this_dir, { desc = "Find files (this directory)" })
-map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
-map("n", "<leader>fs", telescope_live_grep_this_dir, { desc = "Live grep (this directory)" })
+map("n", "<leader>ff", telescope_find_files_toggle, { desc = "Find files" })
+map("n", "<leader>fF", telescope_find_hidden_files, { desc = "Find files (hidden)" })
+map("n", "<leader>fd", telescope_find_files_this_dir_toggle, { desc = "Find files (this directory)" })
+map("n", "<leader>fD", telescope_find_hidden_files_this_dir, { desc = "Find files (hidden, this directory)" })
+map("n", "<leader>fg", telescope_live_grep_toggle, { desc = "Live grep" })
+map("n", "<leader>fG", telescope_live_grep_hidden, { desc = "Live grep (hidden)" })
+map("n", "<leader>fs", telescope_live_grep_this_dir_toggle, { desc = "Live grep (this directory)" })
+map("n", "<leader>fS", telescope_live_grep_hidden_this_dir, { desc = "Live grep (hidden, this directory)" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
 map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help tags" })

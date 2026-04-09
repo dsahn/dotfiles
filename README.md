@@ -160,6 +160,11 @@ nix profile install ~/.config/nix#default
 - `lazy.nvim` 기반 플러그인 로딩
 - `kanagawa` colorscheme
 - `telescope` + `telescope-fzf-native` (파일/문자열 검색)
+  - 기본: `<leader>ff` / `<leader>fg`
+  - 숨김 포함: `<leader>fF` / `<leader>fG` (`.git/` 제외)
+  - 현재 디렉토리 기준: `<leader>fd` / `<leader>fs`
+  - 현재 디렉토리 + 숨김 포함: `<leader>fD` / `<leader>fS` (`.git/` 제외)
+  - `ff` / `fg` / `fd` / `fs` 실행 후 Telescope 창 안에서 `<M-h>`로 숨김 검색 토글 가능
 - `nvim-tree` (사이드바 파일 탐색기)
 - `treesitter` (문법 하이라이팅/들여쓰기)
 - `which-key` (리더키 힌트 팝업)

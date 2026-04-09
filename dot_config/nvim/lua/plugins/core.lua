@@ -141,7 +141,13 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      spec = {
+        { "<leader>f", group = "Find" },
+        { "<leader>a", group = "AI" },
+        { "<leader>g", group = "Git" },
+      },
+    },
   },
   {
     "lukas-reineke/indent-blankline.nvim",
