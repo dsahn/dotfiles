@@ -282,6 +282,21 @@ _fzf_comprun() {
 # run vscode from terminal
 code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
+{{ if eq .chezmoi.os "darwin" }}
+# Cursor IDE: ~/.local/bin/cursor(설치 스크립트 셈)이 PATH 앞에 있으면 /usr/local/bin 등이
+# 빠진 환경에서 실제 CLI를 못 찾아 agent만 실행되거나 창이 안 뜨는 경우가 있다.
+# VS Code의 code()와 같이 번들 CLI 경로를 직접 쓴다.
+cursor () {
+  local _cursor_bin="/usr/local/bin/cursor"
+  [[ -x "$_cursor_bin" ]] || _cursor_bin="/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
+  if [[ ! -x "$_cursor_bin" ]]; then
+    echo "cursor: Cursor.app CLI를 찾을 수 없습니다 (/usr/local/bin 또는 /Applications)" >&2
+    return 1
+  fi
+  VSCODE_CWD="$PWD" "$_cursor_bin" "$@"
+}
+{{ end }}
+
 alias docker="podman"
 
 # office k8s settings (loaded from separate file to avoid version control)
