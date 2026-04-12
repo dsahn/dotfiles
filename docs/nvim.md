@@ -32,7 +32,7 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
   - 현재 디렉토리 기준: `<leader>fd` / `<leader>fs`
   - 현재 디렉토리 + 숨김 포함: `<leader>fD` / `<leader>fS` (`.git/` 제외)
   - `ff` / `fg` / `fd` / `fs` 실행 후 Telescope 창 안에서 `<M-h>`로 숨김 검색 토글 가능
-- `nvim-tree` (사이드바 파일 탐색기)
+- `neo-tree.nvim` (사이드바: 파일 트리 + git 상태 트리, `filesystem` / `git_status`)
 - `treesitter` (문법 하이라이팅/들여쓰기)
 - `which-key` (리더키 힌트 팝업)
 - `lualine` (상태바)
@@ -144,7 +144,8 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
 
 **파일 / 탐색**
 
-- `<leader>e` : 파일 탐색기 토글 (nvim-tree)
+- `<leader>e` : 파일 트리 토글 (neo-tree `filesystem`)
+- `<leader>gE` : git 변경 트리 토글 (neo-tree `git_status`). 상세는 [nvim-git-workflows.md#nvim-sidebar-git-views](nvim-git-workflows.md#nvim-sidebar-git-views)
 - `<leader>ff` : 파일 찾기
 - `<leader>fd` : 현재 파일이 있는 폴더만 대상으로 파일 찾기
 - `<leader>fg` : 문자열 검색 (워크스페이스)
@@ -163,7 +164,7 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
 **Git**
 
 - 상세 키맵과 제안 목록은 [nvim-git-workflows.md](nvim-git-workflows.md) 참고
-- `<leader>gS` : 변경 파일 목록 (Telescope `git_status`). 사이드바형 변경 트리는 `<leader>gd`(diffview)와 [워크플로 문서의 해당 절](nvim-git-workflows.md#nvim-sidebar-git-views) 참고
+- `<leader>gS` : 변경 파일 목록 (Telescope `git_status`). 사이드바·diff와의 역할 분담은 [워크플로 문서의 해당 절](nvim-git-workflows.md#nvim-sidebar-git-views) 참고
 
 `which-key`를 설치해둬서 `<leader>`를 누르면 사용 가능한 키 조합 힌트를 팝업으로 확인할 수 있다.
 

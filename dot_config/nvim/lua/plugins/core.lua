@@ -61,31 +61,74 @@ return {
     end,
   },
   {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    keys = {
+      {
+        "<leader>e",
+        function()
+          require("neo-tree.command").execute({
+            toggle = true,
+            position = "left",
+            source = "filesystem",
+            reveal = true,
+          })
+        end,
+        desc = "Toggle file tree (neo-tree)",
+      },
+      {
+        "<leader>gE",
+        function()
+          require("neo-tree.command").execute({
+            toggle = true,
+            position = "left",
+            source = "git_status",
+          })
+        end,
+        desc = "Toggle git status tree (neo-tree)",
+      },
+    },
+    ---@module "neo-tree"
+    ---@type neotree.Config
     opts = {
-      hijack_netrw = true,
-      sync_root_with_cwd = true,
-      view = {
-        side = "left",
+      sources = { "filesystem", "git_status" },
+      source_selector = {
+        winbar = true,
+        sources = {
+          { source = "filesystem", display_name = "󰉓 " },
+          { source = "git_status", display_name = "󰊢 " },
+        },
+      },
+      open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "edgy", "notify" },
+      window = {
+        position = "left",
         width = 35,
       },
-      filters = {
-        dotfiles = false,
+      filesystem = {
+        bind_to_cwd = true,
+        filtered_items = {
+          hide_dotfiles = false,
+        },
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = false,
+        },
+        hijack_netrw_behavior = "open_default",
       },
-      update_focused_file = {
-        enable = true,
-        update_root = false,
-      },
-      actions = {
-        open_file = {
-          quit_on_open = true,
+      event_handlers = {
+        {
+          event = "file_opened",
+          handler = function()
+            require("neo-tree.command").execute({ action = "close" })
+          end,
         },
       },
     },
-    config = function(_, opts)
-      require("nvim-tree").setup(opts)
-    end,
   },
   {
     "nvim-telescope/telescope.nvim",

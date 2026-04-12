@@ -166,7 +166,6 @@ end
 
 map("n", "<leader>w", "<cmd>write<cr>", { desc = "Save file" })
 map("n", "<leader>q", "<cmd>quit<cr>", { desc = "Quit window" })
-map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer sidebar" })
 map("n", "<leader>ff", telescope_find_files_toggle, { desc = "Find files" })
 map("n", "<leader>fF", telescope_find_hidden_files, { desc = "Find files (hidden)" })
 map("n", "<leader>fd", telescope_find_files_this_dir_toggle, { desc = "Find files (this directory)" })
