@@ -6,4 +6,7 @@ Library/Application Support/com.mitchellh.ghostty/config
 # k8s configuration (managed separately from dotfiles)
 .k8s-config.zsh
 
+# repo-only documentation (not deployed to home)
+docs
+
 README.md

@@ -1,5 +1,5 @@
 --- Optional language bundles keyed by chezmoi `nvim_languages` entries.
--- See README (neovim) for valid keys and chezmoi `[data] nvim_languages`.
+-- See docs/nvim.md (nvim_languages) for valid keys and chezmoi `[data] nvim_languages`.
 
 local M = {}
 

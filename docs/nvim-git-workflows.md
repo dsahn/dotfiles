@@ -1,6 +1,6 @@
 # Neovim Git Workflows
 
-Neovim 안에서 Git 작업은 `gitsigns` + `diffview.nvim` + `neogit` 조합으로 사용한다.
+[nvim.md](nvim.md) 하위 문서. Neovim 안에서 Git 작업은 `gitsigns` + `diffview.nvim` + `neogit` 조합으로 사용한다.
 
 ## 현재 적용된 키맵
 
