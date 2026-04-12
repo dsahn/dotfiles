@@ -163,6 +163,7 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
 **Git**
 
 - 상세 키맵과 제안 목록은 [nvim-git-workflows.md](nvim-git-workflows.md) 참고
+- `<leader>gS` : 변경 파일 목록 (Telescope `git_status`). 사이드바형 변경 트리는 `<leader>gd`(diffview)와 [워크플로 문서의 해당 절](nvim-git-workflows.md#nvim-sidebar-git-views) 참고
 
 `which-key`를 설치해둬서 `<leader>`를 누르면 사용 가능한 키 조합 힌트를 팝업으로 확인할 수 있다.
 

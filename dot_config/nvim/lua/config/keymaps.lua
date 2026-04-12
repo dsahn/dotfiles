@@ -240,3 +240,4 @@ map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview git h
 map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>", { desc = "Git blame line" })
 map("n", "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Stage hunk" })
 map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Reset hunk" })
+map("n", "<leader>gS", "<cmd>Telescope git_status<cr>", { desc = "Git changed files (Telescope)" })

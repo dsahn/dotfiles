@@ -19,8 +19,24 @@
 | `<leader>gb` | 현재 줄 blame | gitsigns |
 | `<leader>gs` | hunk stage | gitsigns |
 | `<leader>gr` | hunk reset | gitsigns |
+| `<leader>gS` | 변경 파일 목록 (Telescope) | telescope |
 | `]h` | 다음 hunk | gitsigns |
 | `[h` | 이전 hunk | gitsigns |
+
+<span id="nvim-sidebar-git-views"></span>
+
+## 사이드바: 파일 트리 vs 변경(또는 diff) 뷰
+
+VSCode의 **Explorer**와 **Source Control**을 한 창에서 소스만 바꿔 켜는 패턴(`neo-tree`의 `filesystem` / `git_status` 전환 등)에 가장 가깝게 가려면 플러그인 교체가 필요하다. 현재 스택(`nvim-tree` + `gitsigns` + `diffview`)에서는 아래처럼 역할을 나누는 편이 단순하다.
+
+| 목적 | 추천 진입 | 설명 |
+|------|-----------|------|
+| 워크스페이스 전체 파일 트리 | `<leader>e` | `nvim-tree` 사이드바 |
+| **변경 파일만** 트리(고정 패널) | `<leader>gd` | `diffview` 왼쪽 `file_panel`(트리 스타일). `<leader>gx`로 닫기 |
+| 변경 파일 빠른 선택(플로팅) | `<leader>gS` | `Telescope git_status` — 파일 열기·스테이징 등은 Telescope 기본 동작 |
+| 인라인 하이라이트·헝크 작업 | `gitsigns` | 사이드바와 무관하게 버퍼에서 처리 |
+
+`gitsigns`는 gutter·blame·hunk 단위 동작에 두고, “변경 목록을 트리로 훑기”는 **diffview 패널** 또는 **Telescope**로 보완하는 구성이다. 나중에 Explorer/SCM을 **한 사이드바 슬롯에서 소스 전환**까지 맞추고 싶다면 `nvim-tree` 대신 `neo-tree.nvim`(filesystem + git_status 소스) 이전을 검토하면 된다.
 
 ## 권장 사용 흐름
 
