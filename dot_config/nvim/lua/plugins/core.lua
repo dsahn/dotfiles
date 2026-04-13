@@ -52,8 +52,6 @@ return {
       return {
         ensure_installed = parsers,
         auto_install = true,
-        highlight = { enable = true },
-        indent = { enable = true },
       }
     end,
     config = function(_, opts)
