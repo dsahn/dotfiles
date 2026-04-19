@@ -26,12 +26,13 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
 
 - `lazy.nvim` 기반 플러그인 로딩
 - `kanagawa` colorscheme
-- `telescope` + `telescope-fzf-native` (파일/문자열 검색)
+- `telescope` + `telescope-fzf-native` (파일/문자열 검색, `:` 명령 히스토리)
   - 기본: `<leader>ff` / `<leader>fg`
   - 숨김 포함: `<leader>fF` / `<leader>fG` (`.git/` 제외)
   - 현재 디렉토리 기준: `<leader>fd` / `<leader>fs`
   - 현재 디렉토리 + 숨김 포함: `<leader>fD` / `<leader>fS` (`.git/` 제외)
   - `ff` / `fg` / `fd` / `fs` 실행 후 Telescope 창 안에서 `<M-h>`로 숨김 검색 토글 가능
+  - `:` 명령 히스토리: `<leader>fc` (`Telescope command_history`)
 - `neo-tree.nvim` (왼쪽 사이드바 단일 패널, 소스 전환: `filesystem` · `buffers` · `git_status` · `document_symbols`, winbar 탭·`<`/`>` 순환)
 - `treesitter` (문법 하이라이팅/들여쓰기)
 - `which-key` (리더키 힌트 팝업)
@@ -153,6 +154,7 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
 - `<leader>fg` : 문자열 검색 (워크스페이스)
 - `<leader>fs` : 현재 파일이 있는 폴더만 대상으로 문자열 검색
 - `<leader>fb` : 버퍼 찾기
+- `<leader>fc` : `:` 명령 히스토리 (Telescope `command_history`, fzf-native 정렬)
 - `<leader>fk` : 키맵 찾기
 
 **LSP**

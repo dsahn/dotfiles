@@ -73,6 +73,14 @@ lazy 로딩 이전에 에러가 발생하던 문제를 수정했다.
 관련 모듈은 키 실행 시점에만 불러오도록 변경했다.
 ```
 
+## 설정과 문서 동기화
+
+**설정·스크립트·도구 구성**(chezmoi 관리 대상, `dot_*`·템플릿·`docs/`와 맞물린 README 등)을 바꿀 때, **키맵·패키지·운영 절차처럼 문서에 적혀 있거나 적을 만한 내용**이 바뀌면 사용자가 그걸 문서로 찾는다고 가정하고 **`docs/`와 [README.md](README.md)를 실제 동작과 맞춘다.**
+
+- 변경 범위에 해당하는 주제 문서(예: Neovim은 [docs/nvim.md](docs/nvim.md), zsh는 [docs/zsh-startup-profiling.md](docs/zsh-startup-profiling.md) 등)를 갱신한다.
+- README에 요약·체크리스트·키바인딩 등으로 같은 내용이 드러나 있으면 그 부분도 함께 수정한다.
+- 새 주제가 생기면 `docs/`에 문서를 두고 README의 관련 절에서 링크하는 편이 좋다.
+
 ## Best Practice
 
 - 한 커밋에는 한 가지 의도만 담는다

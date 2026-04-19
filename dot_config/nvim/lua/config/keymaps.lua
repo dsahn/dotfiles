@@ -175,6 +175,7 @@ map("n", "<leader>fG", telescope_live_grep_hidden, { desc = "Live grep (hidden)"
 map("n", "<leader>fs", telescope_live_grep_this_dir_toggle, { desc = "Live grep (this directory)" })
 map("n", "<leader>fS", telescope_live_grep_hidden_this_dir, { desc = "Live grep (hidden, this directory)" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
+map("n", "<leader>fc", "<cmd>Telescope command_history<cr>", { desc = "Command history" })
 map("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help tags" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
