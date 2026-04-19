@@ -32,7 +32,7 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
   - 현재 디렉토리 기준: `<leader>fd` / `<leader>fs`
   - 현재 디렉토리 + 숨김 포함: `<leader>fD` / `<leader>fS` (`.git/` 제외)
   - `ff` / `fg` / `fd` / `fs` 실행 후 Telescope 창 안에서 `<M-h>`로 숨김 검색 토글 가능
-- `neo-tree.nvim` (사이드바: 파일 트리 + git 상태 트리, `filesystem` / `git_status`)
+- `neo-tree.nvim` (왼쪽 사이드바 단일 패널, 소스 전환: `filesystem` · `buffers` · `git_status` · `document_symbols`, winbar 탭·`<`/`>` 순환)
 - `treesitter` (문법 하이라이팅/들여쓰기)
 - `which-key` (리더키 힌트 팝업)
 - `lualine` (상태바)
@@ -144,8 +144,10 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
 
 **파일 / 탐색**
 
-- `<leader>e` : 파일 트리 토글 (neo-tree `filesystem`)
+- `<leader>e` : 파일 트리 토글 (neo-tree `filesystem`, 열 때 현재 파일 `reveal`)
+- `<leader>eb` : 열린 버퍼 목록 (neo-tree `buffers`)
 - `<leader>gE` : git 변경 트리 토글 (neo-tree `git_status`). 상세는 [nvim-git-workflows.md#nvim-sidebar-git-views](nvim-git-workflows.md#nvim-sidebar-git-views)
+- `<leader>eo` : 현재 버퍼 문서 심볼 트리 (neo-tree `document_symbols`, LSP 필요)
 - `<leader>ff` : 파일 찾기
 - `<leader>fd` : 현재 파일이 있는 폴더만 대상으로 파일 찾기
 - `<leader>fg` : 문자열 검색 (워크스페이스)

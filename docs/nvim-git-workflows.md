@@ -1,6 +1,6 @@
 # Neovim Git Workflows
 
-[nvim.md](nvim.md) 하위 문서. 사이드바 변경 트리는 `neo-tree.nvim`의 `git_status` 소스로, 나머지 Git 작업은 `gitsigns` + `diffview.nvim` + `neogit` 조합으로 사용한다.
+[nvim.md](nvim.md) 하위 문서. **변경 파일** 사이드바 뷰는 `neo-tree.nvim`의 `git_status` 소스로 본다(같은 패널에 파일·버퍼·심볼 소스도 둠). 나머지 Git 작업은 `gitsigns` + `diffview.nvim` + `neogit` 조합으로 사용한다.
 
 ## 현재 적용된 키맵
 
@@ -28,12 +28,14 @@
 
 ## 사이드바: 파일 트리 vs 변경(또는 diff) 뷰
 
-사이드바는 **`neo-tree.nvim`**으로 통일했다. 소스는 `filesystem`과 `git_status`만 켜 두었고, 창 상단 **winbar 탭**으로 소스를 바꿀 수 있다. 트리 안에서는 기본 매핑대로 `<` / `>`로 이전·다음 소스로도 전환된다.
+사이드바는 **`neo-tree.nvim`** 한 패널에서 소스만 바꿔 쓴다. 켜 둔 소스는 `filesystem` · `buffers` · `git_status` · `document_symbols`이고, 창 상단 **winbar 탭**으로 고를 수 있다. 트리 안에서는 기본 매핑대로 `<` / `>`로 이전·다음 소스로도 전환된다.
 
 | 목적 | 추천 진입 | 설명 |
 |------|-----------|------|
 | 워크스페이스 전체 파일 트리 | `<leader>e` | neo-tree `filesystem`(열 때 현재 파일 `reveal`) |
+| 열린 버퍼 목록(같은 왼쪽 슬롯) | `<leader>eb` | neo-tree `buffers` |
 | **변경 파일만** 트리(같은 왼쪽 슬롯) | `<leader>gE` | neo-tree `git_status` |
+| 현재 파일 문서 심볼(같은 왼쪽 슬롯) | `<leader>eo` | neo-tree `document_symbols`(LSP 필요) |
 | staged/unstaged **diff** 패널 | `<leader>gd` | `diffview` 왼쪽 `file_panel` + diff. `<leader>gx`로 닫기 |
 | 변경 파일 빠른 선택(플로팅) | `<leader>gS` | `Telescope git_status` |
 | 인라인 하이라이트·헝크 | `gitsigns` | 버퍼 기준 동작 |

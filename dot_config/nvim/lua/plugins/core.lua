@@ -91,16 +91,40 @@ return {
         end,
         desc = "Toggle git status tree (neo-tree)",
       },
+      {
+        "<leader>eb",
+        function()
+          require("neo-tree.command").execute({
+            toggle = true,
+            position = "left",
+            source = "buffers",
+          })
+        end,
+        desc = "Toggle buffers list (neo-tree)",
+      },
+      {
+        "<leader>eo",
+        function()
+          require("neo-tree.command").execute({
+            toggle = true,
+            position = "left",
+            source = "document_symbols",
+          })
+        end,
+        desc = "Toggle document symbols outline (neo-tree)",
+      },
     },
     ---@module "neo-tree"
     ---@type neotree.Config
     opts = {
-      sources = { "filesystem", "git_status" },
+      sources = { "filesystem", "buffers", "git_status", "document_symbols" },
       source_selector = {
         winbar = true,
         sources = {
           { source = "filesystem", display_name = "󰉓 " },
+          { source = "buffers", display_name = "󰈔 " },
           { source = "git_status", display_name = "󰊢 " },
+          { source = "document_symbols", display_name = "󰠅 " },
         },
       },
       open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "edgy", "notify" },
@@ -118,6 +142,13 @@ return {
           leave_dirs_open = false,
         },
         hijack_netrw_behavior = "open_default",
+      },
+      buffers = {
+        bind_to_cwd = true,
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = false,
+        },
       },
       event_handlers = {
         {

@@ -28,6 +28,8 @@ dotfiles for multiple platforms. maintained by chezmoi
   - [x] 최소 Lua 기반 nvim 설정 추가
   - [x] nvim + rust 환경 구축 문서화
   - 세부 과제는 [Neovim 개선 백로그](docs/nvim-backlog.md)에서 체크
+  - [x] neotree: `filesystem`·`buffers`·`git_status`·`document_symbols` 네 소스, winbar 탭, `<`/`>` 순환
+    - 토글: `<leader>e`(파일), `<leader>eb`(버퍼), `<leader>gE`(git), `<leader>eo`(심볼·LSP 필요)
 - [ ] vscode common settings
 - [x] aliases
 - [x] tmux -> zellij in zshrc
@@ -145,6 +147,7 @@ nix profile install ~/.config/nix#default
 
 Neovim 설정·언어 번들·Lazy·키맵·백로그는 [docs/nvim.md](docs/nvim.md)에 정리했다.
 
+- 사이드바는 **neo-tree** 단일 패널에서 소스만 바꿔 쓴다(위 체크리스트·`dot_config/nvim/lua/plugins/core.lua`).
 - [개요·관리 대상·기능·nvim_languages·Lazy·키맵](docs/nvim.md)
 - [Git 워크플로우](docs/nvim-git-workflows.md)
 - [LazyVim 스타일 플러그인 후보](docs/nvim-lazyvim-plugin-candidates.md)
