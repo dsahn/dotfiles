@@ -1,0 +1,71 @@
+{{ if index . "zellij_smart_tabs" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# zellij-smart-tabs 설치 방식
+# - source: 소스 빌드(cargo)
+# - release: wasm 릴리즈 다운로드
+
+MODE="{{ or (index . "zellij_smart_tabs_install_mode") "source" }}"
+REPO_URL="https://github.com/YesYouKenSpace/zellij-smart-tabs.git"
+REF="{{ or (index . "zellij_smart_tabs_ref") "v0.1.0" }}"
+WASM_URL="{{ or (index . "zellij_smart_tabs_wasm_url") "" }}"
+if [[ -z "${WASM_URL}" ]]; then
+  WASM_URL="https://github.com/YesYouKenSpace/zellij-smart-tabs/releases/download/${REF}/zellij-smart-tabs.wasm"
+fi
+
+CACHE_DIR="${HOME}/.cache/chezmoi/zellij-smart-tabs"
+INSTALL_DIR="${HOME}/.config/zellij/plugins"
+WASM_NAME="zellij-smart-tabs.wasm"
+DEST_PATH="${INSTALL_DIR}/${WASM_NAME}"
+
+mkdir -p "${INSTALL_DIR}"
+
+case "${MODE}" in
+  source)
+    if ! command -v cargo >/dev/null 2>&1; then
+      echo "cargo 가 없습니다. Rust(rustup)를 설치하거나 install_mode=release 를 사용하세요." >&2
+      exit 1
+    fi
+    if ! command -v rustup >/dev/null 2>&1; then
+      echo "rustup 이 없습니다. Rust(rustup)를 설치하거나 install_mode=release 를 사용하세요." >&2
+      exit 1
+    fi
+
+    rustup target add wasm32-wasip1
+
+    if [[ ! -d "${CACHE_DIR}/.git" ]]; then
+      mkdir -p "$(dirname "${CACHE_DIR}")"
+      git clone --depth 1 --branch "${REF}" "${REPO_URL}" "${CACHE_DIR}"
+    else
+      git -C "${CACHE_DIR}" fetch --depth 1 origin "refs/tags/${REF}:refs/tags/${REF}" 2>/dev/null || \
+        git -C "${CACHE_DIR}" fetch --depth 1 origin "${REF}" || true
+      git -C "${CACHE_DIR}" checkout --force "${REF}"
+    fi
+
+    cd "${CACHE_DIR}"
+    cargo build --release --target wasm32-wasip1
+    cp "target/wasm32-wasip1/release/${WASM_NAME}" "${DEST_PATH}"
+    echo "zellij-smart-tabs: source 빌드 설치 완료 (${DEST_PATH}, ref ${REF})"
+    ;;
+  release)
+    if ! command -v curl >/dev/null 2>&1; then
+      echo "curl 이 없습니다. curl 설치 또는 install_mode=source 사용이 필요합니다." >&2
+      exit 1
+    fi
+
+    TMP_PATH="$(mktemp "${DEST_PATH}.XXXXXX")"
+    curl --fail --location --silent --show-error "${WASM_URL}" -o "${TMP_PATH}"
+    mv "${TMP_PATH}" "${DEST_PATH}"
+    echo "zellij-smart-tabs: release 다운로드 설치 완료 (${DEST_PATH}, ${WASM_URL})"
+    ;;
+  *)
+    echo "알 수 없는 zellij_smart_tabs_install_mode: ${MODE} (source|release)" >&2
+    exit 1
+    ;;
+esac
+{{ else -}}
+#!/bin/sh
+# zellij_smart_tabs=false — 빌드 생략. 켜려면 ~/.config/chezmoi/chezmoi.toml 과 docs/zellij.md 참고.
+exit 0
+{{ end }}

@@ -4,6 +4,15 @@
 git_name = "dsahn"
 git_email = "ads50112@gmail.com"
 nvim_languages = []
+# zellij-smart-tabs: 소스 빌드 후 ~/.config/zellij/plugins/ 에 설치 (run_onchange). 자세한 것은 docs/zellij.md
+zellij_smart_tabs = false
+# 설치 방식: "source"(기본, cargo 빌드) | "release"(GitHub release wasm 다운로드)
+zellij_smart_tabs_install_mode = "source"
+# source/release 공통 버전(태그/브랜치). 기본 release URL은 이 값을 사용해 생성.
+zellij_smart_tabs_ref = "v0.1.0"
+# release 모드에서 비워두면 기본 URL 사용:
+# https://github.com/YesYouKenSpace/zellij-smart-tabs/releases/download/<ref>/zellij-smart-tabs.wasm
+zellij_smart_tabs_wasm_url = ""
 
 [edit]
 command = "nvim"

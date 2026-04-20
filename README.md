@@ -47,6 +47,10 @@ dotfiles for multiple platforms. maintained by chezmoi
     `nix profile install <flake>#default`로 수행
 - 공통 설치(oh-my-zsh, fzf, bun 등):
   `.chezmoiscripts/run_once_before_02_install-common.sh.tmpl`
+- Zellij: `dot_config/zellij/config.kdl.tmpl`  
+  - 선택적으로 [zellij-smart-tabs](https://github.com/YesYouKenSpace/zellij-smart-tabs) 설치·`file://` 로드 (`chezmoi` 데이터 `zellij_smart_tabs`)  
+  - 설치 모드: `zellij_smart_tabs_install_mode = "source"`(기본, cargo 빌드) / `"release"`(wasm 릴리즈 다운로드)  
+  - 자세한 절차: [docs/zellij.md](docs/zellij.md)
 
 ### 실행 예시
 
