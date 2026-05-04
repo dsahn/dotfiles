@@ -35,6 +35,7 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
   - `:` 명령 히스토리: `<leader>fc` (`Telescope command_history`)
 - `neo-tree.nvim` (왼쪽 사이드바 단일 패널, 소스 전환: `filesystem` · `buffers` · `git_status` · `document_symbols`, winbar 탭·`<`/`>` 순환)
 - `treesitter` (문법 하이라이팅/들여쓰기)
+- `render-markdown.nvim` (Markdown 버퍼 시각 렌더; treesitter·mini.nvim 의존)
 - `which-key` (리더키 힌트 팝업)
 - `lualine` (상태바)
 - `gitsigns` (git 변경 표시, hunk 이동/stage/blame)
