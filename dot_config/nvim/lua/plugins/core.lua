@@ -20,7 +20,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     build = ":TSUpdate",
-    opts = function()
+    lazy = false,
+    config = function()
       local base = {
         "bash",
         "json",
@@ -50,13 +51,28 @@ return {
           end
         end
       end
-      return {
-        ensure_installed = parsers,
-        auto_install = true,
-      }
-    end,
-    config = function(_, opts)
-      require("nvim-treesitter").setup(opts)
+
+      local nts = require("nvim-treesitter")
+      nts.setup()
+      nts.install(parsers)
+
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          local buf = args.buf
+          local ft = vim.bo[buf].filetype
+          local lang = vim.treesitter.language.get_lang_by_name(ft)
+          if not lang then
+            return
+          end
+          if not pcall(vim.treesitter.start, buf, lang) then
+            return
+          end
+          vim.bo[buf].syntax = "ON"
+          pcall(function()
+            vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end)
+        end,
+      })
     end,
   },
   {
@@ -258,6 +274,8 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-mini/mini.nvim",
     },
+    -- dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" }, -- if you use standalone mini plugins
+    -- dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer devicons
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {},
