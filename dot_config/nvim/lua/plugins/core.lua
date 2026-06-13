@@ -60,7 +60,7 @@ return {
         callback = function(args)
           local buf = args.buf
           local ft = vim.bo[buf].filetype
-          local lang = vim.treesitter.language.get_lang_by_name(ft)
+          local lang = vim.treesitter.language.get_lang(ft)
           if not lang then
             return
           end
