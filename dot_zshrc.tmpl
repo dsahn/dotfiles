@@ -139,6 +139,12 @@ else
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+{{ if eq .chezmoi.os "darwin" }}
+[[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zsh/cmux-theme-fzf.zsh" ]] && \
+  source "${XDG_DATA_HOME:-$HOME/.local/share}/zsh/cmux-theme-fzf.zsh"
+{{ end }}
+
 # fzf 키바인딩 커스터마이징
 bindkey -r "^T"  # 기존 Ctrl+T 제거
 bindkey "^F" fzf-file-widget  # Ctrl+F로 파일 선택
