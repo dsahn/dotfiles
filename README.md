@@ -20,7 +20,7 @@ dotfiles for multiple platforms. maintained by chezmoi
 - [x] zshrc
   - [x] 회사전용 로직을 발라내고, 공통 세팅만 유지한다.
 - [x] zsh-dependencies(fzf, powershell, ..)
-- [x] ghostty settings
+- [x] ghostty / cmux 터미널 설정 (`~/.config/ghostty/config`, [docs/ghostty.md](docs/ghostty.md))
 - [x] 패키지 매니저 설치(brew, cask) 및 설치스크립트 작성
 - [x] karabiner 세팅(darwin)
 - [x] vimrc(nvim)
@@ -30,6 +30,7 @@ dotfiles for multiple platforms. maintained by chezmoi
   - 세부 과제는 [Neovim 개선 백로그](docs/nvim-backlog.md)에서 체크
   - [x] neotree: `filesystem`·`buffers`·`git_status`·`document_symbols` 네 소스, winbar 탭, `<`/`>` 순환
     - 토글: `<leader>e`(파일), `<leader>eb`(버퍼), `<leader>gE`(git), `<leader>eo`(심볼·LSP 필요)
+  - [ ] tab 도 예쁘게 보여주는 테마 찾아보기
 - [ ] vscode common settings
 - [x] aliases
 - [x] tmux -> zellij in zshrc
@@ -51,6 +52,8 @@ dotfiles for multiple platforms. maintained by chezmoi
   - 선택적으로 [zellij-smart-tabs](https://github.com/YesYouKenSpace/zellij-smart-tabs) 설치·`file://` 로드 (`chezmoi` 데이터 `zellij_smart_tabs`)  
   - 설치 모드: `zellij_smart_tabs_install_mode = "source"`(기본, cargo 빌드) / `"release"`(wasm 릴리즈 다운로드)  
   - 자세한 절차: [docs/zellij.md](docs/zellij.md)
+- Ghostty / cmux: `dot_config/ghostty/config` → `~/.config/ghostty/config`  
+  - `cmuxtheme` 로 고른 테마는 장비 로컬(`config.ghostty`), chezmoi 비관리 — [docs/ghostty.md](docs/ghostty.md)
 
 ### 실행 예시
 

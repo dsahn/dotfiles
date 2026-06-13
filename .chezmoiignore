@@ -1,5 +1,9 @@
-{{ if ne .chezmoi.os "darwin" }}
+{{ if eq .chezmoi.os "darwin" }}
 Library/Application Support/com.mitchellh.ghostty/config
+Library/Application Support/com.cmuxterm.app/config.ghostty
+{{ end }}
+
+{{ if ne .chezmoi.os "darwin" }}
 .config/karabiner/karabiner.json
 {{ end }}
 

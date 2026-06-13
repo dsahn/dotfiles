@@ -1,4 +1,6 @@
 # fzf로 cmux(Ghostty) 테마를 고르고 cmux themes set으로 적용한다.
+# 적용 결과는 ~/Library/Application Support/com.cmuxterm.app/config.ghostty 에만
+# 기록되며 chezmoi 비관리(장비 로컬). 공유 설정은 ~/.config/ghostty/config — docs/ghostty.md
 
 _cmuxtheme_bin() {
   [[ -n ${commands[cmux]:-} ]] && print -r -- "$commands[cmux]" && return 0

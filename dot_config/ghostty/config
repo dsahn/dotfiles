@@ -1,0 +1,12 @@
+# Ghostty / cmux 공유 터미널 설정 (chezmoi: dot_config/ghostty/config)
+# cmux 테마 오버라이드(cmuxtheme)는 장비 로컬 — docs/ghostty.md 참고
+
+theme = Lovelace
+
+font-family = MesloLGS NF
+font-family = D2Coding ligature
+
+# macOS: option을 alt처럼 쓰기 (Ghostty 전용, cmux는 무시)
+keybind = alt+left=unbind
+keybind = alt+right=unbind
+macos-option-as-alt = true
