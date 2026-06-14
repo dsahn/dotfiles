@@ -34,7 +34,7 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
   - `ff` / `fg` / `fd` / `fs` 실행 후 Telescope 창 안에서 `<M-h>`로 숨김 검색 토글 가능
   - `:` 명령 히스토리: `<leader>fc` (`Telescope command_history`)
 - `neo-tree.nvim` (왼쪽 사이드바 단일 패널, 소스 전환: `filesystem` · `buffers` · `git_status` · `document_symbols`, winbar 탭·`<`/`>` 순환)
-- `treesitter` (문법 하이라이팅/들여쓰기)
+- `treesitter` (문법 하이라이팅/들여쓰기; **main** 브랜치 — `tree-sitter` CLI v0.26+ 필요)
 - `render-markdown.nvim` (Markdown 버퍼 시각 렌더; treesitter·mini.nvim 의존)
 - `which-key` (리더키 힌트 팝업)
 - `lualine` (상태바)
@@ -76,6 +76,10 @@ chezmoi로 배포하는 Neovim 설정의 구조·운영·언어 번들을 정리
 | `clang` | `c`, `cpp` | `clangd` | `clang_format` |
 
 포맷터·언어 서버는 **PATH 또는 Mason**에 있어야 한다. 도구 설치는 [언어 매뉴얼](nvim-language-manuals.md)을 따른다.
+
+**Treesitter parser 설치** (`nvim-treesitter` main): 시스템에 `tree-sitter` CLI가 PATH에 있어야 한다.
+macOS는 `brew install tree-sitter-cli` (`tree-sitter` 라이브러리 formula와 다름).
+설치 확인: `:checkhealth nvim-treesitter` · parser 재설치: `:TSInstall yaml` 등.
 
 추가 플러그인 아이디어는 [nvim-lazyvim-plugin-candidates.md](nvim-lazyvim-plugin-candidates.md)를 본다.
 

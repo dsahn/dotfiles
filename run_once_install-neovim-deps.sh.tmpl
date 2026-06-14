@@ -28,13 +28,19 @@ try_install_with_dnf() {
 }
 
 if command -v brew >/dev/null 2>&1; then
-  install_with_brew neovim ripgrep fd fzf make lua-language-server stylua
+  install_with_brew neovim ripgrep fd fzf make lua-language-server stylua tree-sitter-cli
 elif command -v apt-get >/dev/null 2>&1; then
   install_with_apt neovim ripgrep fzf make
-  try_install_with_apt fd-find lua-language-server stylua
+  try_install_with_apt fd-find lua-language-server stylua tree-sitter-cli
+  if ! command -v tree-sitter >/dev/null 2>&1 && command -v cargo >/dev/null 2>&1; then
+    cargo install tree-sitter-cli --locked || true
+  fi
 elif command -v dnf >/dev/null 2>&1; then
   install_with_dnf neovim ripgrep fzf make
-  try_install_with_dnf fd-find lua-language-server stylua
+  try_install_with_dnf fd-find lua-language-server stylua tree-sitter-cli
+  if ! command -v tree-sitter >/dev/null 2>&1 && command -v cargo >/dev/null 2>&1; then
+    cargo install tree-sitter-cli --locked || true
+  fi
 else
   echo "지원되는 패키지 매니저를 찾지 못했습니다. neovim/ripgrep/fd/fzf/lua-language-server/stylua 를 수동 설치해주세요."
 fi

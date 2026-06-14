@@ -30,6 +30,7 @@
               imagemagick
               mise
               neovim
+              tree-sitter
               python3
               ripgrep
               rustc

@@ -54,6 +54,17 @@ return {
 
       local nts = require("nvim-treesitter")
       nts.setup()
+
+      if vim.fn.executable("tree-sitter") ~= 1 then
+        vim.notify(
+          "tree-sitter CLI가 없어 parser를 설치할 수 없습니다. "
+            .. "macOS: brew install tree-sitter-cli · "
+            .. "설치 후 :checkhealth nvim-treesitter",
+          vim.log.levels.ERROR
+        )
+        return
+      end
+
       nts.install(parsers)
 
       vim.api.nvim_create_autocmd("FileType", {
