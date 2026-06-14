@@ -34,17 +34,14 @@ cmux themes clear
 macOS zsh에서 `cmux-theme-fzf.zsh` 가 로드되면 `cmuxtheme` 함수를 쓸 수 있다.
 
 ```sh
-cmuxtheme              # fzf로 light/dark 동시 적용
+cmuxtheme              # fzf로 테마 선택 후 light/dark 동시 적용
 cmuxtheme --light      # light 테마만
 cmuxtheme --dark       # dark 테마만
 cmuxtheme clear        # cmux 테마 오버라이드 제거
 ```
 
-설정 변경 후 cmux에 반영:
-
-```sh
-cmux reload-config
-```
+Enter로 확정하면 `cmux themes set`이 실행되고 `config.ghostty`에 저장된다.
+목록 마커: `●` light+dark, `L` light, `D` dark.
 
 ## macOS 마이그레이션 (1회)
 
