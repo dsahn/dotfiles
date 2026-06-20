@@ -14,6 +14,7 @@ _cmuxtheme_restore() {
   if [[ "$light" == inherit && "$dark" == inherit ]]; then
     "$cmux_bin" themes clear >/dev/null 2>&1
   else
+    "$cmux_bin" themes clear >/dev/null 2>&1
     [[ "$light" != inherit ]] && "$cmux_bin" themes set --light "$light" >/dev/null 2>&1
     [[ "$dark" != inherit ]] && "$cmux_bin" themes set --dark "$dark" >/dev/null 2>&1
   fi
@@ -78,9 +79,8 @@ cmuxtheme() {
   # ESC/취소 → 프리뷰로 바꾼 테마를 원래대로 원복
   if [[ $rc -ne 0 || -z "$selection" ]]; then
     _cmuxtheme_restore "$cmux_bin" "$current_light" "$current_dark"
-    print "reverted: light=$current_light dark=$current_dark"
-    return
-  fi 
+    return 130
+  fi
 
   theme="${selection#*$'\t'}"
   [[ -n "$theme" ]] || return 1
@@ -91,5 +91,4 @@ cmuxtheme() {
     *)     "$cmux_bin" themes set "$theme" ;;
   esac
   "$cmux_bin" reload-config >/dev/null 2>&1
-  print "applied: $theme ($mode)"
 }
