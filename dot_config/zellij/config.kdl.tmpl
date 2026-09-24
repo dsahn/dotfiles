@@ -158,6 +158,14 @@ keybinds clear-defaults=true {
         bind "Alt n" { NewPane; }
         bind "Alt o" { MoveTab "right"; }
         bind "Ctrl q" { Quit; }
+{{- if index . "zellij_harpoon" }}
+        bind "Ctrl y" {
+            LaunchOrFocusPlugin "file://{{ .chezmoi.homeDir }}/.config/zellij/plugins/harpoon.wasm" {
+                floating true
+                move_to_focused_tab true
+            }
+        }
+{{- end }}
     }
     shared_except "locked" "move" {
         bind "Ctrl h" { SwitchToMode "move"; }

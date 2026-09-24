@@ -1,0 +1,46 @@
+{{ if index . "zellij_harpoon" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# harpoon 은 GitHub release 가 없어 소스 빌드만 지원한다.
+# RunCommands 권한을 쓰는 플러그인이라 검토한 커밋 SHA 로 고정해 빌드한다.
+
+REPO_URL="https://github.com/Nacho114/harpoon.git"
+REF="{{ or (index . "zellij_harpoon_ref") "7553290e22516c230e598e4fa81d91b1714a0a08" }}"
+
+CACHE_DIR="${HOME}/.cache/chezmoi/zellij-harpoon"
+INSTALL_DIR="${HOME}/.config/zellij/plugins"
+WASM_NAME="harpoon.wasm"
+DEST_PATH="${INSTALL_DIR}/${WASM_NAME}"
+
+for cmd in git cargo rustup; do
+  if ! command -v "${cmd}" >/dev/null 2>&1; then
+    echo "${cmd} 가 없습니다. harpoon 은 소스 빌드만 지원하므로 Rust(rustup)와 git 이 필요합니다." >&2
+    exit 1
+  fi
+done
+
+rustup target add wasm32-wasip1
+
+# 커밋 SHA 는 clone --branch 로 받을 수 없어 init + fetch 로 가져온다.
+if [[ ! -d "${CACHE_DIR}/.git" ]]; then
+  mkdir -p "${CACHE_DIR}"
+  git -C "${CACHE_DIR}" init --quiet
+  git -C "${CACHE_DIR}" remote add origin "${REPO_URL}"
+fi
+git -C "${CACHE_DIR}" fetch --depth 1 origin "${REF}"
+git -C "${CACHE_DIR}" checkout --force --detach FETCH_HEAD
+
+cd "${CACHE_DIR}"
+cargo build --release --locked --target wasm32-wasip1
+
+mkdir -p "${INSTALL_DIR}"
+TMP_PATH="$(mktemp "${DEST_PATH}.XXXXXX")"
+cp "target/wasm32-wasip1/release/${WASM_NAME}" "${TMP_PATH}"
+mv "${TMP_PATH}" "${DEST_PATH}"
+echo "zellij harpoon: source 빌드 설치 완료 (${DEST_PATH}, ref ${REF})"
+{{ else -}}
+#!/bin/sh
+# zellij_harpoon=false — 빌드 생략. 켜려면 ~/.config/chezmoi/chezmoi.toml 과 docs/zellij.md 참고.
+exit 0
+{{ end }}
