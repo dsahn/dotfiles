@@ -50,3 +50,58 @@
 
 - Zellij 0.44.0 이상  
 - Nerd Font 권장(아이콘)  
+
+## harpoon (선택)
+
+[Nacho114/harpoon](https://github.com/Nacho114/harpoon) 은 자주 쓰는 패인을 목록에 등록해 두고 바로 이동하는 플러그인이다 (nvim harpoon 의 zellij 판).
+`~/.config/zellij/plugins/harpoon.wasm` 으로 두고 `config.kdl` 키바인딩에서 `file://` 로 불러온다.
+GitHub release 가 없어 **소스 빌드만** 지원한다.
+
+### 켜기
+
+1. `~/.config/chezmoi/chezmoi.toml` 의 `[data]` 에 다음을 넣는다.
+
+   ```toml
+   [data]
+   zellij_harpoon = true
+   # 검토한 커밋 SHA 로 고정
+   zellij_harpoon_ref = "7553290e22516c230e598e4fa81d91b1714a0a08"
+   ```
+
+2. **Rust** (`cargo`) + `rustup` + `git` 이 필요하다. 타깃 `wasm32-wasip1` 은 스크립트가 추가한다.
+
+3. `chezmoi apply` 를 실행한다.
+   - `dot_config/zellij/config.kdl.tmpl` 이 `Ctrl y` 키바인딩을 켠다.
+   - `run_onchange_after_02_build-zellij-harpoon.sh.tmpl` 이 `~/.cache/chezmoi/zellij-harpoon` 에 해당 커밋을 받아 `cargo build --release --locked` 후 복사한다.
+
+4. 처음 `Ctrl y` 를 누르면 권한 요청(`ReadApplicationState`, `ChangeApplicationState`, `RunCommands`)이 뜬다. `y` 로 승인하면 이후엔 묻지 않는다.
+
+### 사용법
+
+어느 모드에서든(`locked` 제외) `Ctrl y` 로 floating 창을 연다.
+
+| 키 | 동작 |
+|---|---|
+| `a` | 열기 직전 포커스였던 패인을 목록에 추가 (추가 후 바로 닫힘) |
+| `A` | 모든 탭의 터미널 패인을 전부 추가 |
+| `d` | 선택 항목 삭제 |
+| `j` / `k`, `↑` / `↓` | 항목 이동 |
+| `Enter` / `l` | 선택한 패인으로 이동 |
+| `Esc` / `c` | 닫기 |
+
+- 닫힌 패인은 목록에서 자동으로 빠지고, 탭·패인 이름 변경은 목록에 반영된다.
+- 목록은 세션별로 `~/.local/share/zellij-harpoon/<세션명>.json` 에 "탭 이름 + 패인 제목"으로 저장된다. 세션 복원 시 같은 제목의 패인이 여러 개면 다른 패인에 연결될 수 있다.
+
+### 주의사항
+
+- **floating 패인이 같이 뜬다**: floating 레이어는 탭 단위로 한꺼번에 보이고 숨는다. 그 탭에 숨겨둔 floating 패인(`Alt f` 로 만든 것 등)이 있으면 harpoon 을 열 때 함께 보이고, harpoon 을 닫아도 남는다. harpoon 이 패인을 만드는 것은 아니다.
+- **세션 이름**: 저장 경로가 따옴표 없이 `sh -c` 문자열에 들어간다. 세션 이름에 공백이나 `;`, `$(...)` 같은 셸 문자를 쓰지 않는다.
+- `RunCommands` 권한은 저장/로드(`cat`, `mkdir`, `printf`)에만 쓰인다 (커밋 `7553290` 기준 검토). 네트워크 접근과 `build.rs` 는 없다.
+
+### 업그레이드
+
+upstream 변경분(`src/`)을 검토한 뒤 `[data] zellij_harpoon_ref` 를 새 커밋 SHA 로 바꾸고 `chezmoi apply` 한다. 스크립트 내용이 바뀌므로 다음 적용에서 재빌드된다.
+
+### 끄기
+
+`zellij_harpoon = false` 로 두면 `Ctrl y` 키바인딩이 빠진다. 이미 설치된 `harpoon.wasm` 은 남으니 필요하면 직접 지운다.

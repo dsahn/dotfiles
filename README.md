@@ -51,6 +51,7 @@ dotfiles for multiple platforms. maintained by chezmoi
 - Zellij: `dot_config/zellij/config.kdl.tmpl`  
   - 선택적으로 [zellij-smart-tabs](https://github.com/YesYouKenSpace/zellij-smart-tabs) 설치·`file://` 로드 (`chezmoi` 데이터 `zellij_smart_tabs`)  
   - 설치 모드: `zellij_smart_tabs_install_mode = "source"`(기본, cargo 빌드) / `"release"`(wasm 릴리즈 다운로드)  
+  - 선택적으로 [harpoon](https://github.com/Nacho114/harpoon) 소스 빌드·`Ctrl y` 로 실행 (`chezmoi` 데이터 `zellij_harpoon`, 커밋 SHA 고정 `zellij_harpoon_ref`)  
   - 자세한 절차: [docs/zellij.md](docs/zellij.md)
 - Ghostty / cmux: `dot_config/ghostty/config` → `~/.config/ghostty/config`  
   - `cmuxtheme` 로 고른 테마는 장비 로컬(`config.ghostty`), chezmoi 비관리 — [docs/ghostty.md](docs/ghostty.md)
@@ -84,6 +85,9 @@ nix profile install ~/.config/nix#default
   - `Esc`: normal 모드 진입
   - `v`: normal 모드에서 편집기로 명령어 편집
   - `Ctrl+X` `Ctrl+E`: insert/normal 모두에서 명령줄 전체를 `$VISUAL`/`$EDITOR`(nvim)로 편집
+
+- zellij harpoon (`zellij_harpoon = true` 일 때)
+  - `Ctrl + Y`: 즐겨찾기 패인 목록 열기 (`a` 추가, `Enter` 이동, `d` 삭제) — [docs/zellij.md](docs/zellij.md#harpoon-선택)
 
 ## zsh 설정 메모
 
