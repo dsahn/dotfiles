@@ -81,6 +81,14 @@ lazy 로딩 이전에 에러가 발생하던 문제를 수정했다.
 - README에 요약·체크리스트·키바인딩 등으로 같은 내용이 드러나 있으면 그 부분도 함께 수정한다.
 - 새 주제가 생기면 `docs/`에 문서를 두고 README의 관련 절에서 링크하는 편이 좋다.
 
+## 이 레포에서 관리하지 않는 것
+
+**Claude Code 설정(`~/.claude/`)은 이 레포가 아니라 my-skills 레포에서 관리한다.**
+
+- `~/.claude/settings.json`, `~/.claude/hooks/`를 이 레포 작업 중에 직접 고치지 않는다. 안전장치 hook(파괴적 git 명령 확인 등)은 my-skills plugin이, 알림음 등 취향 설정은 my-skills의 snippet이 담당한다.
+- `~/.claude/`를 chezmoi 관리 대상(`dot_claude/` 등)으로 추가하지 않는다. `settings.json`은 Claude Code가 permissions 등을 계속 고치는 파일이라 `re-add`와 충돌한다.
+- 이 레포 작업 중 hook·권한 설정이 필요해 보이면 직접 바꾸지 말고, my-skills 쪽에서 처리하도록 사용자에게 알린다.
+
 ## Best Practice
 
 - 한 커밋에는 한 가지 의도만 담는다
