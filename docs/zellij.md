@@ -1,5 +1,23 @@
 # Zellij
 
+## 키바인딩
+
+`dot_config/zellij/config.kdl.tmpl` 은 `clear-defaults` 없이 **zellij 기본 키맵을 그대로 쓰고, 바꿀 것만 덮어쓴다.**
+zellij 를 업그레이드하면 새 기본 키가 자동으로 따라온다.
+
+- 기본 키맵 확인: `zellij setup --dump-config`
+- 모드별 블록(`scroll { ... }`)에 같은 키를 다시 `bind` 하면 기본값을 덮어쓴다.
+- 기본 키를 없애려면 해당 모드 안에서 `unbind "키"` 를 쓴다.
+
+덮어쓰는 것:
+
+| 모드 | 키 | 동작 | 조건 |
+|---|---|---|---|
+| scroll | `Alt h/j/k/l`, `Alt ←↓↑→` | 패인 이동 후 normal 로 나감 (기본은 scroll 모드 유지) | 항상 |
+| tab | `r` | smart-tabs 에 수동 이름 알림 후 이름 변경 | `zellij_smart_tabs` |
+| renametab | `Esc` | 이름 변경 취소 후 smart-tabs 자동 이름으로 복귀 | `zellij_smart_tabs` |
+| locked 외 전부 | `Ctrl y` | harpoon 열기 | `zellij_harpoon` |
+
 ## zellij-smart-tabs (선택)
 
 [YesYouKenSpace/zellij-smart-tabs](https://github.com/YesYouKenSpace/zellij-smart-tabs) 를 `~/.config/zellij/plugins/zellij-smart-tabs.wasm` 으로 두고, `config.kdl` 에서 `file://` 로 불러온다.
