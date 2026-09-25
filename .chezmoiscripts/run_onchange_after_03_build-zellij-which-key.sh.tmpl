@@ -1,0 +1,60 @@
+{{ if index . "zellij_which_key" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# zj-which-key: 키바인딩 검색 browser. 검토한 커밋 SHA 로 고정해 소스 빌드한다.
+# 플러그인 UI 가 권한 요청 키 입력을 받지 못하므로(README), 권한을 zellij 캐시에 미리 등록한다.
+
+REPO_URL="https://github.com/johnae/zj-which-key.git"
+REF="{{ or (index . "zellij_which_key_ref") "48f7d3fe8cdf360b10d1b5ce3038d593935779eb" }}"
+
+CACHE_DIR="${HOME}/.cache/chezmoi/zellij-which-key"
+INSTALL_DIR="${HOME}/.config/zellij/plugins"
+WASM_NAME="zj_which_key.wasm"
+DEST_PATH="${INSTALL_DIR}/${WASM_NAME}"
+{{- if eq .chezmoi.os "darwin" }}
+PERMISSIONS_FILE="${HOME}/Library/Caches/org.Zellij-Contributors.Zellij/permissions.kdl"
+{{- else }}
+PERMISSIONS_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/zellij/permissions.kdl"
+{{- end }}
+
+for cmd in git cargo rustup; do
+  if ! command -v "${cmd}" >/dev/null 2>&1; then
+    echo "${cmd} 가 없습니다. zj-which-key 는 소스 빌드만 지원하므로 Rust(rustup)와 git 이 필요합니다." >&2
+    exit 1
+  fi
+done
+
+rustup target add wasm32-wasip1
+
+# 커밋 SHA 는 clone --branch 로 받을 수 없어 init + fetch 로 가져온다.
+if [[ ! -d "${CACHE_DIR}/.git" ]]; then
+  mkdir -p "${CACHE_DIR}"
+  git -C "${CACHE_DIR}" init --quiet
+  git -C "${CACHE_DIR}" remote add origin "${REPO_URL}"
+fi
+git -C "${CACHE_DIR}" fetch --depth 1 origin "${REF}"
+git -C "${CACHE_DIR}" checkout --force --detach FETCH_HEAD
+
+cd "${CACHE_DIR}"
+cargo build --release --locked --target wasm32-wasip1
+
+mkdir -p "${INSTALL_DIR}"
+TMP_PATH="$(mktemp "${DEST_PATH}.XXXXXX")"
+cp "target/wasm32-wasip1/release/${WASM_NAME}" "${TMP_PATH}"
+mv "${TMP_PATH}" "${DEST_PATH}"
+
+# browser 역할에 필요한 권한만 등록한다. 이미 항목이 있으면 건드리지 않는다.
+mkdir -p "$(dirname "${PERMISSIONS_FILE}")"
+touch "${PERMISSIONS_FILE}"
+if ! grep -qF "\"${DEST_PATH}\"" "${PERMISSIONS_FILE}"; then
+  printf '"%s" {\n    ReadApplicationState\n    ChangeApplicationState\n}\n' "${DEST_PATH}" >> "${PERMISSIONS_FILE}"
+  echo "zj-which-key: 권한 등록 (${PERMISSIONS_FILE})"
+fi
+
+echo "zj-which-key: source 빌드 설치 완료 (${DEST_PATH}, ref ${REF})"
+{{ else -}}
+#!/bin/sh
+# zellij_which_key=false — 빌드 생략. 켜려면 ~/.config/chezmoi/chezmoi.toml 과 docs/zellij.md 참고.
+exit 0
+{{ end }}

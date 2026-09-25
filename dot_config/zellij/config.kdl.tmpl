@@ -1,5 +1,5 @@
 // Managed by chezmoi (dot_config/zellij/config.kdl.tmpl).
-// 플러그인 설정(zellij_harpoon): ~/.config/chezmoi/chezmoi.toml 의 [data] 및 docs/zellij.md 참고.
+// 플러그인 설정(zellij_harpoon, zellij_which_key): ~/.config/chezmoi/chezmoi.toml 의 [data] 및 docs/zellij.md 참고.
 
 // 키맵은 zellij 기본값을 그대로 쓰고, 아래에서 바꿀 것만 덮어쓴다.
 // 기본 키맵 확인: zellij setup --dump-config
@@ -18,6 +18,18 @@ keybinds {
             LaunchOrFocusPlugin "file://{{ .chezmoi.homeDir }}/.config/zellij/plugins/harpoon.wasm" {
                 floating true
                 move_to_focused_tab true
+            }
+        }
+    }
+{{- end }}
+{{- if index . "zellij_which_key" }}
+    // zj-which-key: 모든 모드의 키바인딩을 fuzzy 검색하는 browser. 열자마자 입력하면 걸러진다.
+    shared_except "locked" {
+        bind "Alt /" {
+            LaunchOrFocusPlugin "file://{{ .chezmoi.homeDir }}/.config/zellij/plugins/zj_which_key.wasm" {
+                floating true
+                move_to_focused_tab true
+                role "browser" // configuration 아래가 아니라 이 블록의 직접 자식이어야 한다
             }
         }
     }
