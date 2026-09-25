@@ -1,5 +1,5 @@
 // Managed by chezmoi (dot_config/zellij/config.kdl.tmpl).
-// 플러그인 설정(zellij_smart_tabs, zellij_harpoon): ~/.config/chezmoi/chezmoi.toml 의 [data] 및 docs/zellij.md 참고.
+// 플러그인 설정(zellij_harpoon): ~/.config/chezmoi/chezmoi.toml 의 [data] 및 docs/zellij.md 참고.
 
 // 키맵은 zellij 기본값을 그대로 쓰고, 아래에서 바꿀 것만 덮어쓴다.
 // 기본 키맵 확인: zellij setup --dump-config
@@ -12,27 +12,6 @@ keybinds {
         bind "Alt j" "Alt down" { MoveFocus "down"; SwitchToMode "normal"; }
         bind "Alt k" "Alt up" { MoveFocus "up"; SwitchToMode "normal"; }
     }
-{{- if index . "zellij_smart_tabs" }}
-    // smart-tabs: 직접 이름을 바꾸면 수동 이름으로 고정, 취소하면 자동 이름으로 되돌린다.
-    tab {
-        bind "r" {
-            MessagePlugin "smart-tabs" {
-                name "set_focused_to_manual"
-            }
-            SwitchToMode "renametab"
-            TabNameInput 0
-        }
-    }
-    renametab {
-        bind "esc" {
-            UndoRenameTab
-            SwitchToMode "tab"
-            MessagePlugin "smart-tabs" {
-                name "set_focused_to_managed"
-            }
-        }
-    }
-{{- end }}
 {{- if index . "zellij_harpoon" }}
     shared_except "locked" {
         bind "Ctrl y" {
@@ -62,19 +41,12 @@ plugins {
     welcome-screen location="zellij:session-manager" {
         welcome_screen true
     }
-{{- if index . "zellij_smart_tabs" }}
-    smart-tabs location="file://{{ .chezmoi.homeDir }}/.config/zellij/plugins/zellij-smart-tabs.wasm" {
-    }
-{{- end }}
 }
 
 // Plugins to load in the background when a new session starts
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
-{{- if index . "zellij_smart_tabs" }}
-    smart-tabs
-{{- end }}
 }
  
 // Use a simplified UI without special fonts (arrow glyphs)
