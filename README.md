@@ -50,8 +50,6 @@ dotfiles for multiple platforms. maintained by chezmoi
   `.chezmoiscripts/run_once_before_02_install-common.sh.tmpl`
 - Zellij: `dot_config/zellij/config.kdl.tmpl`  
   - 키맵은 zellij 기본값 + 필요한 것만 덮어쓰기 ([docs/zellij.md](docs/zellij.md#키바인딩))  
-  - 선택적으로 [zellij-smart-tabs](https://github.com/YesYouKenSpace/zellij-smart-tabs) 설치·`file://` 로드 (`chezmoi` 데이터 `zellij_smart_tabs`)  
-  - 설치 모드: `zellij_smart_tabs_install_mode = "source"`(기본, cargo 빌드) / `"release"`(wasm 릴리즈 다운로드)  
   - 선택적으로 [harpoon](https://github.com/Nacho114/harpoon) 소스 빌드·`Ctrl y` 로 실행 (`chezmoi` 데이터 `zellij_harpoon`, 커밋 SHA 고정 `zellij_harpoon_ref`)  
   - 자세한 절차: [docs/zellij.md](docs/zellij.md)
 - Ghostty / cmux: `dot_config/ghostty/config` → `~/.config/ghostty/config`  
