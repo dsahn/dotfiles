@@ -22,7 +22,7 @@ dotfiles for multiple platforms. maintained by chezmoi
 - [x] zsh-dependencies(fzf, powershell, ..)
 - [x] ghostty / cmux 터미널 설정 (`~/.config/ghostty/config`, [docs/ghostty.md](docs/ghostty.md))
 - [x] 패키지 매니저 설치(brew, cask) 및 설치스크립트 작성
-- [x] karabiner 세팅(darwin)
+- [x] karabiner 세팅(darwin) — GUI 변경 반영 절차: [docs/karabiner.md](docs/karabiner.md)
 - [x] vimrc(nvim)
   - [x] 개별 스트립트로 작성, 설치 여부 확인하기
   - [x] 최소 Lua 기반 nvim 설정 추가
