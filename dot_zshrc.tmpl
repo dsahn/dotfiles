@@ -246,13 +246,20 @@ bindkey -M vicmd '^X^E' edit-command-line
 # aliases
 alias vi="nvim"
 alias vim="nvim"
-alias cat="bat"
-alias less="bat"
-alias ls="eza --icons=always"
+# 표준 명령 이름을 덮어쓰는 alias 는 사람이 쓰는 셸에서만 건다.
+# 에이전트 셸(Claude Code 등: CLAUDECODE / AI_AGENT)은 원래 명령의 출력·옵션을 기대하므로 건너뛴다.
+# (eza 아이콘이 경로에 섞이거나, bat 이 cat -v 를 거부하거나, z 가 엉뚱한 디렉터리로 이동하는 문제)
+if [[ -z "${CLAUDECODE}${AI_AGENT}" ]]; then
+  alias cat="bat"
+  alias less="bat"
+  alias ls="eza --icons=always"
+  alias tree="eza --icons=always --tree"
+  alias cd="z"
+  # ld - 디렉터리만 나열합니다(파일 없음). 시스템 링커 ld 를 가리므로 여기에 둔다.
+  alias ld='eza -lD'
+fi
 alias ll="eza --icons=always -l"
 alias la="eza --icons=always -la"
-# ld - 디렉터리만 나열합니다(파일 없음)
-alias ld='eza -lD'
 # lf - 파일만 나열합니다(디렉터리 없음)
 alias lf='eza -lF --color=always | grep -v /'
 # lh - 숨겨진 파일만 나열합니다(디렉토리 없음)
@@ -266,8 +273,6 @@ alias lt='eza -al --sort=modified'
 
 # alias grep="rg"
 # alias find="fd"
-alias tree="eza --icons=always --tree"
-alias cd="z"
 
 ## fzf tricks
 alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim'

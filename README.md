@@ -102,6 +102,13 @@ nix profile install ~/.config/nix#default
 - **kubectl**: `kubectl` 있을 때만 OMZ 플러그인 로드. k8s 컨텍스트·네임스페이스 표시는 Powerlevel10k `kubecontext` 사용(oh-my-zsh `kube-ps1` 미사용)
 - **측정**: `zprof`·벽시계로 시작 병목을 보려면 [zsh 시작 성능 측정 가이드](docs/zsh-startup-profiling.md) 참고
 
+### 에이전트 셸에서는 표준 명령 alias 끄기
+
+`ls`·`tree`·`ld`(eza), `cat`·`less`(bat), `cd`(zoxide)처럼 표준 명령 이름을 덮어쓰는 alias 는
+`CLAUDECODE`·`AI_AGENT` 환경변수가 없는 셸(사람이 쓰는 셸)에서만 건다.
+에이전트는 원래 명령의 출력과 옵션을 기대하기 때문이다(eza 아이콘이 경로에 섞임, `cat -v` 를 bat 이 거부, `cd` 가 zoxide 로 엉뚱한 곳에 이동).
+`ll`·`la`·`lt` 처럼 표준 명령과 겹치지 않는 alias 는 어디서나 그대로 쓴다.
+
 ### k8s 환경 분리
 
 회사 k8s 설정은 `~/.k8s-config.zsh`에 별도 관리 (chezmoi 비관리 대상).
