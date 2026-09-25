@@ -51,6 +51,7 @@ dotfiles for multiple platforms. maintained by chezmoi
 - Zellij: `dot_config/zellij/config.kdl.tmpl`  
   - 키맵은 zellij 기본값 + 필요한 것만 덮어쓰기 ([docs/zellij.md](docs/zellij.md#키바인딩))  
   - 선택적으로 [harpoon](https://github.com/Nacho114/harpoon) 소스 빌드·`Ctrl y` 로 실행 (`chezmoi` 데이터 `zellij_harpoon`, 커밋 SHA 고정 `zellij_harpoon_ref`)  
+  - 선택적으로 [zj-which-key](https://github.com/johnae/zj-which-key) 소스 빌드·`Alt /` 로 키바인딩 검색 (`chezmoi` 데이터 `zellij_which_key`, 커밋 SHA 고정 `zellij_which_key_ref`)  
   - 자세한 절차: [docs/zellij.md](docs/zellij.md)
 - Ghostty / cmux: `dot_config/ghostty/config` → `~/.config/ghostty/config`  
   - `cmuxtheme` 로 고른 테마는 장비 로컬(`config.ghostty`), chezmoi 비관리 — [docs/ghostty.md](docs/ghostty.md)
@@ -87,6 +88,9 @@ nix profile install ~/.config/nix#default
 
 - zellij harpoon (`zellij_harpoon = true` 일 때)
   - `Ctrl + Y`: 즐겨찾기 패인 목록 열기 (`a` 추가, `Enter` 이동, `d` 삭제) — [docs/zellij.md](docs/zellij.md#harpoon-선택)
+
+- zellij 키바인딩 검색 (`zellij_which_key = true` 일 때)
+  - `Alt + /`: 모든 모드의 키바인딩 fuzzy 검색, 열자마자 입력 (`Esc` 닫기) — [docs/zellij.md](docs/zellij.md#zj-which-key-키바인딩-검색-선택)
 
 ## zsh 설정 메모
 
